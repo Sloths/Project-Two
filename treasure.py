@@ -2,7 +2,7 @@ from Tkinter import *
 import ttk
 
 window = Tk()
-canvas = Canvas(window, width=854, height=480, bg='white')
+canvas = Canvas(window, width=854, height=480, bg='white') # On the obstacle class this canvas size is 600x600, is this going to be a problem?
 canvas.pack()
 
 #Creates window and centers to any screen
