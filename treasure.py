@@ -1,5 +1,6 @@
 from Tkinter import *
 import ttk
+import random
 
 window = Tk()
 canvas = Canvas(window, width=854, height=480, bg='white') # On the obstacle class this canvas size is 600x600, is this going to be a problem?
@@ -19,6 +20,21 @@ window.title('Sloths - Virtual Robot Treasure Hunt')
 window.resizable(width=FALSE, height=FALSE)
 window.deiconify()
 
+
+class Treasure():
+    #create random spawn location of treasure, coordinates need adjusting with landmarks 
+    def __init__(self, x,y,size = 12,colour='#ffd700'):
+        
+        self.x = random.randint(0,840) # coordinates for width of random spawn 
+        self.y = random.randint(23,450) # coordinates for height of random spawn 
+        self.colour = colour
+        self.size = size
+        
+    def DrawTreasure(self, canvas): #creating the attributes for the treasure
+        Treasure1 = canvas.create_oval(self.x,self.y,self.x + self.size, self.y + self.size,outline = self.colour, fill=self.colour,tag= "Treasure")
+        # creating object, size goes against each x and y coordinates. tag inplace to call for deletion 
+
+        
 class Timer():
     def __init__(self, label):
         self.second = 0
@@ -30,7 +46,7 @@ class Timer():
 
     def Stop(self):
         self.stop = True
-
+        
     def Count(self):
         if self.stop == False:
             self.second = self.second + 1
@@ -103,13 +119,25 @@ def Start():
     global main
     global rb1T
     global rb2T
+    global T1
+    global T2
+    global T3
+    global T4
     main = Timer(timer)
     rb1T = Timer(rb1Timer)
     rb2T = Timer(rb2Timer)
     main.Count()
     rb1T.Count()
     rb2T.Count()
-
+    T1 = Treasure(x,y) # calling 4 objects and calling their coordinates (random) 
+    T2 = Treasure(x,y)
+    T3 = Treasure(x,y)
+    T4 = Treasure(x,y)
+    T1.DrawTreasure(canvas)
+    T2.DrawTreasure(canvas)
+    T3.DrawTreasure(canvas)
+    T4.DrawTreasure(canvas)
+    
 def Stop():
     global main
     global rb1T
@@ -117,7 +145,9 @@ def Stop():
     main.Stop()
     rb1T.Stop()
     rb2T.Stop()
-    
+    canvas.delete("Treasure")
+                  
+   
 #Creating frames to seperate controls
 Section1 = Frame(bd=1, relief=SUNKEN, height=121, width=161)
 Section1.place(x=11, y=500)
