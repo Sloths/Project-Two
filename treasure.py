@@ -49,12 +49,14 @@ class Timer():
         
     def Count(self):
         if self.stop == False:
-            self.second = self.second + 1
+            #increment second by 1
+            self.second += 1
             if self.second == 60:
-                self.minute = self.minute + 1
+                self.minute += 1
+                #once 60 seconds reached, seconds go back to 0
                 self.second = 0
             if self.minute == 60:
-                self.hour = self.hour + 1
+                self.hour += 1
                 self.minute = 0
 
             #Generate 4 random numbers between 1 - 3 for lights
@@ -63,7 +65,8 @@ class Timer():
                 l2 = random.randrange(1,4,1)
                 l3 = random.randrange(1,4,1)
                 l4 = random.randrange(1,4,1)
-
+            
+            #timer display formatting
             if self.hour < 10:
                 if self.minute < 10:
                     if self.second < 10:
@@ -88,6 +91,7 @@ class Timer():
                         exec str(self.label.config(text=(str(self.hour) + ":" + str(self.minute) + ":" + str(self.second))))
             self.label.after(1000, self.Count)
         else:
+            #display "00:00:00" when timer is stopped
             exec str(self.label.config(text="00:00:00"))
 
 class Lights(Timer):
