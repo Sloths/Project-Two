@@ -57,8 +57,12 @@ class Timer():
                 self.hour = self.hour + 1
                 self.minute = 0
 
-            #if self.second % 5 == 0:
-                #Generate 4 random numbers between 1 - 3
+            #Generate 4 random numbers between 1 - 3 for lights
+            if self.second % 5 == 0:
+                l1 = random.randrange(1,4,1)
+                l2 = random.randrange(1,4,1)
+                l3 = random.randrange(1,4,1)
+                l4 = random.randrange(1,4,1)
 
             if self.hour < 10:
                 if self.minute < 10:
