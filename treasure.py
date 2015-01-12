@@ -3,7 +3,7 @@ import ttk
 import random
 
 window = Tk()
-canvas = Canvas(window, width=854, height=480, bg='white')
+canvas = Canvas(window, width=854, height=480, bg='white') # On the obstacle class this canvas size is 600x600, is this going to be a problem?
 canvas.pack()
 
 #Creates window and centers to any screen
@@ -20,70 +20,6 @@ window.title('Sloths - Virtual Robot Treasure Hunt')
 window.resizable(width=FALSE, height=FALSE)
 window.deiconify()
 
-intPlay = 0
-
-class Robot:
-    def __init__(self):
-        self.vx = 10.0
-        self.vy = 5.0
-        self.rXPos = random.randint(1, 100)
-        self.rYPos = random.randint(1, 100)
-        
-    def robotSpawn(self):
-        self.robot = canvas.create_rectangle(self.rXPos, self.rYPos, self.rXPos + 10, self.rYPos + 10, fill = "cyan", outline = "blue")
-                  
-    def robotMove(self, treasure):
-        global x1
-        global x2
-        global x3
-        global x4
-
-        x1, y1, x2, y2 = canvas.coords(self.robot)
-        
-        # GENERAL ROBOT MOVEMENT
-        if x2 < treasure and y1 > treasure:
-            self.vx = 10.0
-            self.vy = -5.0
-        if x1 > treasure and y1 > treasure:
-            self.vx = -10.0
-            self.vy = -5.0
-        if x2 > treasure and y2 < treasure:
-            self.vx = 10.0
-            self.vy = 5.0
-        if x1 > treasure and y2 < treasure:
-            self.vx = -10.0
-            self.vy = 5.0
-
-        '''  
-        # TRAFFIC LIGHT RESPONSE               
-        if x1 > 0.0 and x2 < (213.5 - 10.0): # Checks if Robot is in section 1.
-            if section1 == "3": # Check is section 1 is red.
-                self.vx = 0.0
-                self.vy = 0.0
-            if section1 == "2":
-                self.vx = 5.0
-                self.vy = 2.5
-        if x1 > (213.5 + 10.0) and x2 < (427.0 - 10.0):
-            if section2 == "3":
-                self.vx = 0.0
-                self.vy = 0.0
-            if section1 == "2":
-                self.vx = 5.0
-                self.vy = 2.5
-        if x1 > (427.0 + 10.0) and x2 < (640.5 - 10.0):
-            if section3 == "3":
-                self.vx = 0.0
-                self.vy = 0.0
-            if section1 == "2":
-                self.vx = 5.0
-                self.vy = 2.5
-        if x1 > (640.5 + 10.0) and x2 < (854.0 - 10.0):
-            if section4 == "3":
-                self.vx = 0.0
-                self.vy = 0.0
-            if section1 == "2":
-                self.vx = 5.0
-                self.vy = 2.5'''
 
 class Treasure():
     #create random spawn location of treasure, coordinates need adjusting with landmarks 
@@ -109,20 +45,16 @@ class Timer():
         self.sections = {}
 
     def Stop(self):
-        global intPlay
-        intPlay = 0
         self.stop = True
         
     def Count(self):
         if self.stop == False:
-            #increment second by 1
-            self.second += 1
+            self.second = self.second + 1
             if self.second == 60:
-                self.minute += 1
-                #once 60 seconds reached, seconds go back to 0
+                self.minute = self.minute + 1
                 self.second = 0
             if self.minute == 60:
-                self.hour += 1
+                self.hour = self.hour + 1
                 self.minute = 0
 
             #Generate 4 random numbers between 1 - 3 for lights
@@ -131,8 +63,7 @@ class Timer():
                 l2 = random.randrange(1,4,1)
                 l3 = random.randrange(1,4,1)
                 l4 = random.randrange(1,4,1)
-            
-            #timer display formatting
+
             if self.hour < 10:
                 if self.minute < 10:
                     if self.second < 10:
@@ -157,7 +88,6 @@ class Timer():
                         exec str(self.label.config(text=(str(self.hour) + ":" + str(self.minute) + ":" + str(self.second))))
             self.label.after(1000, self.Count)
         else:
-            #display "00:00:00" when timer is stopped
             exec str(self.label.config(text="00:00:00"))
 
 class Lights(Timer):
@@ -190,33 +120,23 @@ class Lights(Timer):
         section4=canvas.create_rectangle(sectionWidth * 3, self.height, ((sectionWidth * 4) - 1), 23, dash=(10,10), tag="s4")
                 
 def Start():
-    global intPlay
-    intPlay += 1
-    if intPlay <= 1:
-        global main
-        global rb1T
-        global rb2T
-        global T1
-        global T2
-        global T3
-        global T4
-        main = Timer(timer)
-        rb1T = Timer(rb1Timer)
-        rb2T = Timer(rb2Timer)
-        main.Count()
-        rb1T.Count()
-        rb2T.Count()
-        T1 = Treasure(x,y) # calling 4 objects and calling their coordinates (random) 
-        T2 = Treasure(x,y)
-        T3 = Treasure(x,y)
-        T4 = Treasure(x,y)
-        T1.DrawTreasure(canvas)
-        T2.DrawTreasure(canvas)
-        T3.DrawTreasure(canvas)
-        T4.DrawTreasure(canvas)
-        R1 = Robot()
-        R1.robotSpawn()
-        R1.robotMove()
+    global main
+    global rb1T
+    global rb2T
+    global T1
+    global T2
+    global T3
+    global T4
+    main = Timer(timer)
+    rb1T = Timer(rb1Timer)
+    rb2T = Timer(rb2Timer)
+    main.Count()
+    rb1T.Count()
+    rb2T.Count()
+    treasuretest= [] # creating an empty array for number of treasures using for loop 
+    for n in range (0,4): #giving a range between 0 - 4 
+        treasuretest.append(Treasure(0,0)) #update empty array with given argument 
+        treasuretest[n].DrawTreasure(canvas)# draw treasure onto canvas 
     
 def Stop():
     global main
