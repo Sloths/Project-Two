@@ -125,10 +125,10 @@ class Timer():
 
             #Generate 4 random numbers between 1 - 3 for lights
             if self.second % 5 == 0:
-                l1 = random.randrange(1,4,1)
-                l2 = random.randrange(1,4,1)
-                l3 = random.randrange(1,4,1)
-                l4 = random.randrange(1,4,1)
+                light1.ChangeLight()
+                light2.ChangeLight()
+                light3.ChangeLight()
+                light4.ChangeLight()
 
             if self.hour < 10:
                 if self.minute < 10:
@@ -156,35 +156,115 @@ class Timer():
         else:
             exec str(self.label.config(text="00:00:00"))
 
-class Lights(Timer):
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-        self.sectionWidth = self.width/4
+class Light():
+    def __init__(self, number):
+        self.width = 854
+        self.height = 480
+        self.sectionWidth = 213.5
+        self.number = number
+        self.colour = ""
 
-    def CreateLights(self):
-        sectionWidth = self.width/4
-        light1=canvas.create_rectangle(2, 2, sectionWidth, 23, fill="#2ecc71", tag="1")
-        light2=canvas.create_rectangle(sectionWidth, 2, sectionWidth * 2, 23, fill="#f39c12", tag="2")
-        light3=canvas.create_rectangle(sectionWidth * 2, 2, sectionWidth * 3, 23, fill="#e74c3c", tag="3")
-        light4=canvas.create_rectangle(sectionWidth * 3, 2, ((sectionWidth * 4) - 1), 23, fill="#2ecc71", tag="4")
-
-        light1Text=Label(font=('Helvetica', 8), text='Green', bg="#2ecc71")
-        light2Text=Label(font=('Helvetica', 8), text='Amber', bg="#f39c12")
-        light3Text=Label(font=('Helvetica', 8), text='Red', bg="#e74c3c")
-        light4Text=Label(font=('Helvetica', 8), text='Green', bg="#2ecc71")
-        light1Text.place(x=100, y=13)
-        light2Text.place(x=310, y=13)
-        light3Text.place(x=530, y=13)
-        light4Text.place(x=740, y=13)
-
-        whole=canvas.create_rectangle(2, self.height, (self.width - 3), 2)
-
-        section1=canvas.create_rectangle(0, self.height, sectionWidth, 23, dash=(10,10), tag="s1")
-        section2=canvas.create_rectangle(sectionWidth, self.height, sectionWidth * 2, 23, dash=(10,10), tag="s2")
-        section3=canvas.create_rectangle(sectionWidth * 2, self.height, sectionWidth * 3, 23, dash=(10,10), tag="s3")
-        section4=canvas.create_rectangle(sectionWidth * 3, self.height, ((sectionWidth * 4) - 1), 23, dash=(10,10), tag="s4")
-                
+    def CreateLight(self):
+        global lightcolour1
+        global lightcolour2
+        global lightcolour3
+        global lightcolour4
+        global section1
+        global section2
+        global section3
+        global section4
+        global light1Text
+        global light2Text
+        global light3Text
+        global light4Text
+        
+        if self.number == 1:
+            lightcolour1=canvas.create_rectangle(2, 2, self.sectionWidth, 23, fill="#2ecc71", tag="1")
+            section1=canvas.create_rectangle(0, self.height, self.sectionWidth, 23, dash=(10,10), tag="Green")
+            light1Text=Label(font=('Helvetica', 8), text='Green', bg="#2ecc71")
+            light1Text.place(x=100, y=13)
+            self.colour = "Green"
+        elif self.number == 2:
+            lightcolour2=canvas.create_rectangle(self.sectionWidth, 2, self.sectionWidth * self.number, 23, fill="#f39c12", tag="2")
+            section2=canvas.create_rectangle(self.sectionWidth, self.height, self.sectionWidth * 2, 23, dash=(10,10), tag="Amber")
+            light2Text=Label(font=('Helvetica', 8), text='Amber', bg="#f39c12")
+            light2Text.place(x=310, y=13)
+            self.colour = "Amber"
+        elif self.number == 3:
+            lightcolour3=canvas.create_rectangle(self.sectionWidth * (self.number - 1), 2, self.sectionWidth * self.number, 23, fill="#e74c3c", tag="3")
+            section3=canvas.create_rectangle(self.sectionWidth * 2, self.height, self.sectionWidth * 3, 23, dash=(10,10), tag="Red")
+            light3Text=Label(font=('Helvetica', 8), text='Red', bg="#e74c3c")
+            light3Text.place(x=530, y=13)
+            self.colour = "Red"
+        elif self.number == 4:
+            lightcolour4=canvas.create_rectangle(self.sectionWidth * (self.number - 1), 2, ((self.sectionWidth * self.number) - 1), 23, fill="#2ecc71", tag="4")
+            section4=canvas.create_rectangle(self.sectionWidth * 3, self.height, ((self.sectionWidth * 4) - 1), 23, dash=(10,10), tag="Green")
+            light4Text=Label(font=('Helvetica', 8), text='Green', bg="#2ecc71")
+            light4Text.place(x=740, y=13)
+            self.colour = "Green"
+        
+    def ChangeLight(self):
+        intColour = random.randrange(1,4,1)
+        global canvas
+        
+        lightname = "lightcolour" + str(self.number)
+        section = "section" + str(self.number)
+        
+        if intColour == 1:
+            self.colour = "Green"
+            if self.number == 1:
+                light1Text.config(text='Green', bg="#2ecc71")
+                canvas.itemconfig(lightcolour1, fill="#2ecc71")
+                canvas.itemconfig(section1, tag="Green")
+            elif self.number == 2:
+                light2Text.config(text='Green', bg="#2ecc71")
+                canvas.itemconfig(lightcolour2, fill="#2ecc71")
+                canvas.itemconfig(section2, tag="Green")
+            elif self.number == 3:
+                light3Text.config(text='Green', bg="#2ecc71")
+                canvas.itemconfig(lightcolour3, fill="#2ecc71")
+                canvas.itemconfig(section3, tag="Green")
+            elif self.number == 4:
+                light4Text.config(text='Green', bg="#2ecc71")
+                canvas.itemconfig(lightcolour4, fill="#2ecc71")
+                canvas.itemconfig(section4, tag="Green")
+        elif intColour == 2:
+            self.colour = "Amber"
+            if self.number == 1:
+                light1Text.config(text='Amber', bg="#f39c12")
+                canvas.itemconfig(lightcolour1, fill="#f39c12")
+                canvas.itemconfig(section1, tag="Amber")
+            elif self.number == 2:
+                light2Text.config(text='Amber', bg="#f39c12")
+                canvas.itemconfig(lightcolour2, fill="#f39c12")
+                canvas.itemconfig(section2, tag="Amber")
+            elif self.number == 3:
+                light3Text.config(text='Amber', bg="#f39c12")
+                canvas.itemconfig(lightcolour3, fill="#f39c12")
+                canvas.itemconfig(section3, tag="Amber")
+            elif self.number == 4:
+                light4Text.config(text='Amber', bg="#f39c12")
+                canvas.itemconfig(lightcolour4, fill="#f39c12")
+                canvas.itemconfig(section4, tag="Amber")
+        elif intColour == 3:
+            self.colour = "Red"
+            if self.number == 1:
+                light1Text.config(text='Red', bg="#e74c3c")
+                canvas.itemconfig(lightcolour1, fill="#e74c3c")
+                canvas.itemconfig(section1, tag="Red")
+            elif self.number == 2:
+                light2Text.config(text='Red', bg="#e74c3c")
+                canvas.itemconfig(lightcolour2, fill="#e74c3c")
+                canvas.itemconfig(section2, tag="Red")
+            elif self.number == 3:
+                light3Text.config(text='Red', bg="#e74c3c")
+                canvas.itemconfig(lightcolour3, fill="#e74c3c")
+                canvas.itemconfig(section3, tag="Red")
+            elif self.number == 4:
+                light4Text.config(text='Red', bg="#e74c3c")
+                canvas.itemconfig(lightcolour4, fill="#e74c3c")
+                canvas.itemconfig(section4, tag="Red")
+            
 def Start():
     global intPlay
     intPlay += 1
@@ -297,7 +377,15 @@ rb2Timer.place(x=735, y=607)
 #Padds canvas
 canvas.pack(padx=10, pady=10)
 
-lights = Lights(854, 480)
-lights.CreateLights()
+
+light1 = Light(1)
+light2 = Light(2)
+light3 = Light(3)
+light4 = Light(4)
+light1.CreateLight()
+light2.CreateLight()
+light3.CreateLight()
+light4.CreateLight()
+whole=canvas.create_rectangle(2, 480, 851, 2)
 
 window.mainloop()
