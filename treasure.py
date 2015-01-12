@@ -3,7 +3,7 @@ import ttk
 import random
 
 window = Tk()
-canvas = Canvas(window, width=854, height=480, bg='white') # On the obstacle class this canvas size is 600x600, is this going to be a problem?
+canvas = Canvas(window, width=854, height=480, bg='white')
 canvas.pack()
 
 #Creates window and centers to any screen
@@ -19,6 +19,8 @@ window.geometry("%dx%d+%d+%d" % (winsize + (x, y)))
 window.title('Sloths - Virtual Robot Treasure Hunt')
 window.resizable(width=FALSE, height=FALSE)
 window.deiconify()
+
+intPlay = 0
 
 class Robot:
     def __init__(self):
@@ -107,6 +109,8 @@ class Timer():
         self.sections = {}
 
     def Stop(self):
+        global intPlay
+        intPlay = 0
         self.stop = True
         
     def Count(self):
@@ -186,30 +190,33 @@ class Lights(Timer):
         section4=canvas.create_rectangle(sectionWidth * 3, self.height, ((sectionWidth * 4) - 1), 23, dash=(10,10), tag="s4")
                 
 def Start():
-    global main
-    global rb1T
-    global rb2T
-    global T1
-    global T2
-    global T3
-    global T4
-    main = Timer(timer)
-    rb1T = Timer(rb1Timer)
-    rb2T = Timer(rb2Timer)
-    main.Count()
-    rb1T.Count()
-    rb2T.Count()
-    T1 = Treasure(x,y) # calling 4 objects and calling their coordinates (random) 
-    T2 = Treasure(x,y)
-    T3 = Treasure(x,y)
-    T4 = Treasure(x,y)
-    T1.DrawTreasure(canvas)
-    T2.DrawTreasure(canvas)
-    T3.DrawTreasure(canvas)
-    T4.DrawTreasure(canvas)
-    R1 = Robot()
-    R1.robotSpawn()
-    R1.robotMove()
+    global intPlay
+    intPlay += 1
+    if intPlay <= 1:
+        global main
+        global rb1T
+        global rb2T
+        global T1
+        global T2
+        global T3
+        global T4
+        main = Timer(timer)
+        rb1T = Timer(rb1Timer)
+        rb2T = Timer(rb2Timer)
+        main.Count()
+        rb1T.Count()
+        rb2T.Count()
+        T1 = Treasure(x,y) # calling 4 objects and calling their coordinates (random) 
+        T2 = Treasure(x,y)
+        T3 = Treasure(x,y)
+        T4 = Treasure(x,y)
+        T1.DrawTreasure(canvas)
+        T2.DrawTreasure(canvas)
+        T3.DrawTreasure(canvas)
+        T4.DrawTreasure(canvas)
+        R1 = Robot()
+        R1.robotSpawn()
+        R1.robotMove()
     
 def Stop():
     global main
