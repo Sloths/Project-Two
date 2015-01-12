@@ -20,6 +20,68 @@ window.title('Sloths - Virtual Robot Treasure Hunt')
 window.resizable(width=FALSE, height=FALSE)
 window.deiconify()
 
+class Robot:
+    def __init__(self):
+        self.vx = 10.0
+        self.vy = 5.0
+        self.rXPos = random.randint(1, 100)
+        self.rYPos = random.randint(1, 100)
+        
+    def robotSpawn(self):
+        self.robot = canvas.create_rectangle(self.rXPos, self.rYPos, self.rXPos + 10, self.rYPos + 10, fill = "cyan", outline = "blue")
+                  
+    def robotMove(self, treasure):
+        global x1
+        global x2
+        global x3
+        global x4
+
+        x1, y1, x2, y2 = canvas.coords(self.robot)
+        
+        # GENERAL ROBOT MOVEMENT
+        if x2 < treasure and y1 > treasure:
+            self.vx = 10.0
+            self.vy = -5.0
+        if x1 > treasure and y1 > treasure:
+            self.vx = -10.0
+            self.vy = -5.0
+        if x2 > treasure and y2 < treasure:
+            self.vx = 10.0
+            self.vy = 5.0
+        if x1 > treasure and y2 < treasure:
+            self.vx = -10.0
+            self.vy = 5.0
+
+        '''  
+        # TRAFFIC LIGHT RESPONSE               
+        if x1 > 0.0 and x2 < (213.5 - 10.0): # Checks if Robot is in section 1.
+            if section1 == "3": # Check is section 1 is red.
+                self.vx = 0.0
+                self.vy = 0.0
+            if section1 == "2":
+                self.vx = 5.0
+                self.vy = 2.5
+        if x1 > (213.5 + 10.0) and x2 < (427.0 - 10.0):
+            if section2 == "3":
+                self.vx = 0.0
+                self.vy = 0.0
+            if section1 == "2":
+                self.vx = 5.0
+                self.vy = 2.5
+        if x1 > (427.0 + 10.0) and x2 < (640.5 - 10.0):
+            if section3 == "3":
+                self.vx = 0.0
+                self.vy = 0.0
+            if section1 == "2":
+                self.vx = 5.0
+                self.vy = 2.5
+        if x1 > (640.5 + 10.0) and x2 < (854.0 - 10.0):
+            if section4 == "3":
+                self.vx = 0.0
+                self.vy = 0.0
+            if section1 == "2":
+                self.vx = 5.0
+                self.vy = 2.5'''
 
 class Treasure():
     #create random spawn location of treasure, coordinates need adjusting with landmarks 
@@ -145,6 +207,9 @@ def Start():
     T2.DrawTreasure(canvas)
     T3.DrawTreasure(canvas)
     T4.DrawTreasure(canvas)
+    R1 = Robot()
+    R1.robotSpawn()
+    R1.robotMove()
     
 def Stop():
     global main
