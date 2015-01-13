@@ -357,10 +357,6 @@ def Start():
         global main
         global rb1T
         global rb2T
-        global T1
-        global T2
-        global T3
-        global T4
         main = Timer(timer)
         rb1T = Timer(rb1Timer)
         rb2T = Timer(rb2Timer)
