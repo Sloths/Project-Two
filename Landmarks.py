@@ -22,6 +22,93 @@ window.deiconify()
 
 intPlay = 0
 
+class landmark():                                   # Landmark class being created
+
+    def __init__(self, x1, y1, x2, y2):             # this sets out the layout of how all future objects will be set in order to be created
+        self.x1 = x1                                # whatever the objects name.x1 or x2 or y1 or y2, store the value in x1, which then places it in the user interface
+        self.x2 = x2
+        self.y1 = y1
+        self.y2 = y2
+        self.colour  = "green"                      # the background colour for all landmarks is set here to green in the user interface
+        self.outline = "black"                      # the outline colour of all landmarks is set to black in the user interface
+
+    def create(self):
+        self.lndmrk = t.create_rectangle(self.x1,self.y1,self.x2,self.y2, fill=self.colour, outline = self.outline) # creates the landmark with the given coordinates and colours, but they're pre-set.
+        
+
+def MapOneLandMarks():                              #creating a new function which will store all the landmarks in the first map
+    M1L1 = landmark(30, 50, 180, 95)                 # the coordinate placement of the first landmark, in the first map
+    M1L2 = landmark(600,50,800,200)                 # the coordinate placement of the second landmark, in the first map
+    M1L3 = landmark(150,200,370,250) 
+    M1L4 = landmark(370,50,440,150)                              
+    M1L5 = landmark(50,350,110,400)             
+    M1L6 = landmark(450,250,600,400)        
+    M1L7 = landmark(700,250,750,380)                
+    M1L1.create()                                   # this draws the landmark for the first landmark
+    M1L2.create()
+    M1L3.create()
+    M1L4.create()
+    M1L5.create()
+    M1L6.create()
+    M1L7.create()
+    
+#MapOneLandMarks()                                  # this calls the first map function which loads and creates the first map
+
+def MapTwoLandMarks():                              # this function stores all the landmarks for the second map
+    M2L1 = landmark(50, 200, 350, 30)
+    M2L2 = landmark(450, 100, 750, 35)
+    M2L3 = landmark(400, 280, 780, 230)             # this line of code creates the third landmark and positions it accordingly with the given coordinates
+    M2L4 = landmark(350, 350, 550, 430)
+    M2L5 = landmark(30, 230, 80, 400)
+    M2L6 = landmark(220, 250, 290, 290)
+    M2L7 = landmark(690, 400, 750, 350)
+    M2L1.create()                                   # this line of code draws out the first landmark
+    M2L2.create()
+    M2L3.create()
+    M2L4.create()
+    M2L5.create()
+    M2L6.create()
+    M2L7.create()
+#MapTwoLandMarks()                                   # this line of code calls the funcion which creates and draws out the landmarks for the second map
+
+
+def MapThreeLandMarks():
+    M3L1 = landmark(40, 50, 120, 95)
+    M3L2 = landmark(270, 50, 480, 100)
+    M3L3 = landmark(750, 54, 800, 105)
+    M3L4 = landmark(750, 154, 800, 300)
+    M3L5 = landmark(750, 350, 800, 400)
+    M3L6 = landmark(220, 150, 550, 300)
+    M3L7 = landmark(40, 350, 90, 400)
+    M3L1.create()
+    M3L2.create()
+    M3L3.create()
+    M3L4.create()
+    M3L5.create()
+    M3L6.create()
+    M3L7.create()
+#MapThreeLandMarks()
+
+
+def MapFourLandMarks():
+    M4L1 = landmark(30, 50, 90, 380)
+    M4L2 = landmark(160, 50, 260, 95)
+    M4L3 = landmark(550, 50, 600, 225)
+    M4L4 = landmark(550, 270, 600, 430)
+    M4L5 = landmark(130, 370, 260, 420)
+    M4L6 = landmark(130, 200, 280, 250)
+    M4L7 = landmark(670, 180, 800, 300)
+    M4L1.create()
+    M4L2.create()
+    M4L3.create()
+    M4L4.create()
+    M4L5.create()
+    M4L6.create()
+    M4L7.create()
+MapFourLandMarks()
+t.pack()
+window.mainloop()
+
 class Robot:
     def __init__(self):
         self.vx = 10.0
