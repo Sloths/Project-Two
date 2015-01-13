@@ -379,6 +379,40 @@ def Stop():
     rb1T.Stop()
     rb2T.Stop()
     canvas.delete("Treasure")
+    
+def Map1():
+    global SelectedMap
+    SelectedMap = 1                         # command=Map1
+
+def Map2():
+    global SelectedMap
+    SelectedMap = 2                         # command=Map2
+
+def Map3():
+    global SelectedMap
+    SelectedMap = 3
+
+def Map4():
+    global SelectedMap
+    SelectedMap = 4
+
+class Map():
+    def __init__(self, SelectedMap):
+        self.SelectedMap = SelectedMap
+
+    def LoadMap(self):
+        if self.SelectedMap == 1:
+            MapOneLandMarks()
+        elif self.SelectedMap == 2:
+            MapTwoLandMarks()
+        elif self.SelectedMap == 3:
+            MapThreeLandmarks()
+        elif self.SelectedMap == 4:
+            MapFourLandmarks()
+
+    def ClearMap ():
+        def __init__(self, DeletedMap):
+            delete.DeletedMap = DeletedMap
                   
    
 #Creating frames to seperate controls
