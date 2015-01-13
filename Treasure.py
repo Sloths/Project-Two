@@ -33,7 +33,7 @@ class landmark():                                   # Landmark class being creat
         self.outline = "black"                      # the outline colour of all landmarks is set to black in the user interface
 
     def create(self):
-        self.lndmrk = t.create_rectangle(self.x1,self.y1,self.x2,self.y2, fill=self.colour, outline = self.outline) # creates the landmark with the given coordinates and colours, but they're pre-set.
+        self.lndmrk = canvas.create_rectangle(self.x1,self.y1,self.x2,self.y2, fill=self.colour, outline = self.outline) # creates the landmark with the given coordinates and colours, but they're pre-set.
         
 
 def MapOneLandMarks():                              #creating a new function which will store all the landmarks in the first map
@@ -106,8 +106,6 @@ def MapFourLandMarks():
     M4L6.create()
     M4L7.create()
 MapFourLandMarks()
-t.pack()
-window.mainloop()
 
 class Robot:
     def __init__(self):
