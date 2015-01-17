@@ -21,6 +21,7 @@ window.resizable(width=FALSE, height=FALSE)
 window.deiconify()
 
 intPlay = 0
+SelectedMap = 1
 
 class landmark:                                   # Landmark class being created
 
@@ -33,7 +34,7 @@ class landmark:                                   # Landmark class being created
         self.outline = "black"                      # the outline colour of all landmarks is set to black in the user interface
         self.treasure = False
         
-        self.lndmrk = canvas.create_rectangle(self.x1,self.y1,self.x2,self.y2, fill=self.colour, outline = self.outline) # creates the landmark with the given coordinates and colours, but they're pre-set.
+        self.lndmrk = canvas.create_rectangle(self.x1,self.y1,self.x2,self.y2, fill=self.colour, outline = self.outline, tag="Landmark") # creates the landmark with the given coordinates and colours, but they're pre-set.
         
 
 def MapOneLandMarks():                              #creating a new function which will store all the landmarks in the first map
@@ -50,6 +51,7 @@ def MapOneLandMarks():                              #creating a new function whi
 #MapOneLandMarks()                                  # this calls the first map function which loads and creates the first map
 
 def MapTwoLandMarks():                              # this function stores all the landmarks for the second map
+    global obstacles
     obstacles = [
         landmark(50, 200, 350, 30),
         landmark(450, 100, 750, 35),
@@ -62,6 +64,7 @@ def MapTwoLandMarks():                              # this function stores all t
 
 
 def MapThreeLandMarks():
+    global obstacles
     obstacles = [
         landmark(40, 50, 120, 95),
         landmark(270, 50, 480, 100),
@@ -75,6 +78,7 @@ def MapThreeLandMarks():
 
 
 def MapFourLandMarks():
+    global obstacles
     obstacles = [
         landmark(30, 50, 90, 380),
         landmark(160, 50, 260, 95),
@@ -348,13 +352,15 @@ def Start():
         global main
         global rb1T
         global rb2T
+        global m
         main = Timer(timer)
         rb1T = Timer(rb1Timer)
         rb2T = Timer(rb2Timer)
         main.Count()
         rb1T.Count()
         rb2T.Count()
-        MapOneLandMarks()
+        m = Map(SelectedMap)
+        m.LoadMap()
         treasuretest= [] # creating an empty array for number of treasures using for loop 
         for n in range (4): #giving a range between 0 - 4 
             treasuretest.append(Treasure()) #update empty array with given argument 
@@ -367,6 +373,8 @@ def Stop():
     global main
     global rb1T
     global rb2T
+    global m
+    m.ClearMap()
     main.Stop()
     rb1T.Stop()
     rb2T.Stop()
@@ -398,13 +406,13 @@ class Map():
         elif self.SelectedMap == 2:
             MapTwoLandMarks()
         elif self.SelectedMap == 3:
-            MapThreeLandmarks()
+            MapThreeLandMarks()
         elif self.SelectedMap == 4:
-            MapFourLandmarks()
+            MapFourLandMarks()
 
-    def ClearMap ():
-        def __init__(self, DeletedMap):
-            delete.DeletedMap = DeletedMap
+    def ClearMap(self):
+        global canvas
+        canvas.delete("Landmark")
                   
    
 #Creating frames to seperate controls
@@ -420,10 +428,10 @@ Section4.place(x=174, y=581)
 #Creating Buttons
 btnStart=Button(window, text='Start', height=1, width=20, command=Start)
 btnStop=Button(window, text='Stop', height=1, width=20, command=Stop)
-btnMap1=Button(window, text='1', height=1, width=2)
-btnMap2=Button(window, text='2', height=1, width=2)
-btnMap3=Button(window, text='3', height=1, width=2)
-btnMap4=Button(window, text='4', height=1, width=2)
+btnMap1=Button(window, text='1', height=1, width=2, command=Map1)
+btnMap2=Button(window, text='2', height=1, width=2, command=Map2)
+btnMap3=Button(window, text='3', height=1, width=2, command=Map3)
+btnMap4=Button(window, text='4', height=1, width=2, command=Map4)
 
 #Places buttons in correct positions
 btnStart.place(x=16, y=505)
