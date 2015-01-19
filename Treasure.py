@@ -99,25 +99,33 @@ class Robot:
     def robotSpawn(self):
         self.robot = canvas.create_rectangle(self.rXPos, self.rYPos, self.rXPos + 10, self.rYPos + 10, fill = "cyan", outline = "blue")
 
-    def robotMove(self, treasure):
-               
-        x1, y1, x2, y2 = canvas.coords(self.robot)
-        tx1, ty2, tx2, ty2 = canvas.coords(treasure)
+    def robotMove(self, treasures):
 
-        # GENERAL ROBOT MOVEMENT
-        if x2 < tx1 and y1 > ty2:
-            self.vx = 10.0
-            self.vy = -5.0
-        if x1 > tx2 and y1 > ty2:
-            self.vx = -10.0
-            self.vy = -5.0
-        if x2 > tx1 and y2 < ty1:
-            self.vx = 10.0
-            self.vy = 5.0
-        if x1 > tx2 and y2 < ty1:
-            self.vx = -10.0
-            self.vy = 5.0
+        for t in treasures:
+            tx1, ty1, tx2, ty2 = canvas.coords(t.shape)
+            while t.found != True:
+                print "."
+                x1, y1, x2, y2 = canvas.coords(self.robot)
 
+                # GENERAL ROBOT MOVEMENT
+                if x2 < tx1:
+                    self.vx = 10.0
+                if x1 > tx2:
+                    self.vx = -10.0
+                if y2 < ty1:
+                    self.vy = 5.0
+                if y1 > ty2:
+                    self.vy = -5.0
+                    
+                self.rXPos += self.vx
+                self.rYPos += self.vy
+
+                print "D: ", canvas.coords(self.robot)
+                canvas.delete(self.robot)
+                self.robotSpawn()
+                canvas.update()
+                time.sleep(0.1)
+                #input()
         '''  
         # TRAFFIC LIGHT RESPONSE               
         if x1 > 0.0 and x2 < (213.5 - 10.0): # Checks if Robot is in section 1.
@@ -155,6 +163,7 @@ class Treasure:
         
         self.colour = colour
         self.size = size
+        self.found = False
         
     def checkLandmark(self, ):
         global intPlay 
