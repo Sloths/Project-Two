@@ -33,16 +33,17 @@ class landmark:                                   # Landmark class being created
         self.y2 = y2
         self.colour  = "green"                      # the background colour for all landmarks is set here to green in the user interface
         self.outline = "black"                      # the outline colour of all landmarks is set to black in the user interface
-        self.treasure = False
+        self.treasure = False                       #  setting the variable with the value of 'false'
         
         self.lndmrk = canvas.create_rectangle(self.x1,self.y1,self.x2,self.y2, fill=self.colour, outline = self.outline, tag="Landmark") # creates the landmark with the given coordinates and colours, but they're pre-set.
         
 
 def MapOneLandMarks():                              #creating a new function which will store all the landmarks in the first map
     global obstacles 
-    obstacles = [
+    obstacles = [                                    # this creates the array which will contain the landmarks for the first map
+        # this code creates the first landmark                        
         landmark(30, 50, 180, 95),                 
-        landmark(600,50,800,200),                 
+        landmark(600,50,800,200), 
         landmark(150,200,370,250), 
         landmark(370,50,440,150),                              
         landmark(50,350,110,400),            
@@ -54,6 +55,7 @@ def MapOneLandMarks():                              #creating a new function whi
 def MapTwoLandMarks():                              # this function stores all the landmarks for the second map
     global obstacles
     obstacles = [
+        # This code creates the landmarks for the second map
         landmark(50, 200, 350, 30),
         landmark(450, 100, 750, 35),
         landmark(400, 280, 780, 230),           
@@ -67,6 +69,7 @@ def MapTwoLandMarks():                              # this function stores all t
 def MapThreeLandMarks():
     global obstacles
     obstacles = [
+        #this code creates the landmarks for the third map
         landmark(40, 50, 120, 95),
         landmark(270, 50, 480, 100),
         landmark(750, 54, 800, 105),
@@ -81,6 +84,7 @@ def MapThreeLandMarks():
 def MapFourLandMarks():
     global obstacles
     obstacles = [
+        #this code creates the landmark for the fourth map
         landmark(30, 50, 90, 380),
         landmark(160, 50, 260, 95),
         landmark(550, 50, 600, 225),
