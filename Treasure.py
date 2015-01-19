@@ -100,24 +100,21 @@ class Robot:
         self.robot = canvas.create_rectangle(self.rXPos, self.rYPos, self.rXPos + 10, self.rYPos + 10, fill = "cyan", outline = "blue")
 
     def robotMove(self, treasure):
-        global x1
-        global x2
-        global x3
-        global x4
-
+               
         x1, y1, x2, y2 = canvas.coords(self.robot)
+        tx1, ty2, tx2, ty2 = canvas.coords(treasure)
 
         # GENERAL ROBOT MOVEMENT
-        if x2 < treasure and y1 > treasure:
+        if x2 < tx1 and y1 > ty2:
             self.vx = 10.0
             self.vy = -5.0
-        if x1 > treasure and y1 > treasure:
+        if x1 > tx2 and y1 > ty2:
             self.vx = -10.0
             self.vy = -5.0
-        if x2 > treasure and y2 < treasure:
+        if x2 > tx1 and y2 < ty1:
             self.vx = 10.0
             self.vy = 5.0
-        if x1 > treasure and y2 < treasure:
+        if x1 > tx2 and y2 < ty1:
             self.vx = -10.0
             self.vy = 5.0
 
