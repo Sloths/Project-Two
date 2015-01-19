@@ -1,6 +1,7 @@
 from Tkinter import *
 import ttk
 import random
+import time
 
 window = Tk()
 canvas = Canvas(window, width=854, height=480, bg='white')
@@ -126,6 +127,7 @@ class Robot:
                 canvas.update()
                 time.sleep(0.1)
                 #input()
+
         '''  
         # TRAFFIC LIGHT RESPONSE               
         if x1 > 0.0 and x2 < (213.5 - 10.0): # Checks if Robot is in section 1.
@@ -373,7 +375,7 @@ def Start():
             treasuretest[n].DrawTreasure(canvas)# draw treasure onto canvas 
         R1 = Robot()
         R1.robotSpawn()
-        R1.robotMove()
+        R1.robotMove(treasuretest)
         
 def Stop():
     global main
