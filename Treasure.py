@@ -34,7 +34,7 @@ class landmark:                                   # Landmark class being created
         self.colour  = "green"                      # the background colour for all landmarks is set here to green in the user interface
         self.outline = "black"                      # the outline colour of all landmarks is set to black in the user interface
         self.treasure = False                       #  setting the variable with the value of 'false'
-        self.treasureID = ""
+        self.treasureID = ""        
         
         self.lndmrk = canvas.create_rectangle(self.x1,self.y1,self.x2,self.y2, fill=self.colour, outline = self.outline, tag="Landmark") # creates the landmark with the given coordinates and colours, but they're pre-set.
         
@@ -101,6 +101,7 @@ class Robot:
         self.vy = 5.0
         self.rXPos = random.randint(1, 100)
         self.rYPos = random.randint(1, 100)
+        
 
     def robotSpawn(self):
         self.robot = canvas.create_rectangle(self.rXPos, self.rYPos, self.rXPos + 10, self.rYPos + 10, fill = "cyan", outline = "blue")
@@ -109,8 +110,8 @@ class Robot:
 
         for o in obstacles:
             tx1, ty1, tx2, ty2 = canvas.coords(o.lndmrk)
-            while t.found != True:
-                print "."
+            while o.treasure == True:
+                
                 x1, y1, x2, y2 = canvas.coords(self.robot)
 
                 # GENERAL ROBOT MOVEMENT
@@ -126,22 +127,22 @@ class Robot:
                 if y1 > ty2:
                     self.vy = -5.0
                     self.vx = 0.0
-                    
+
                 # LOCATION CHECK
                 if x2 > tx1 - 20.0 and x2 < tx2 + 20.0 and y1 > ty1 - 20.0 and y2 < ty2 + 20.0:
                     o.treasure = False
                     ID = o.treasureID 
                     canvas.delete(ID)
-                    o.treasureID = ""   
+                    o.treasureID = ""                    
                     
-                self.rXPos += self.vx
+                self.rXPos += self.vx                
                 self.rYPos += self.vy
-
+                
                 canvas.delete(self.robot)
-                self.robotSpawn()
+                self.robotSpawn()                
                 canvas.update()
                 time.sleep(0.1)
-                #input()
+            
 
         '''  
         # TRAFFIC LIGHT RESPONSE               
@@ -174,9 +175,9 @@ class Robot:
                 self.vx = 5.0
                 self.vy = 2.5'''
 
-class Treasure:
+class Treasure():
    #create random spawn location of treasure, coordinates need adjusting with landmarks 
-    def __init__(self,n, x=0,y=0,size = 12,colour='#ffd700'):
+    def __init__(self, n, x=0,y=0,size = 12,colour='#ffd700'):
         
         self.colour = colour
         self.size = size
@@ -185,7 +186,7 @@ class Treasure:
         self.id = "Treasure" + str(n)
         print self.id
         
-    def checkLandmark(self, ):
+    def checkLandmark(self):
         global intPlay 
         if intPlay <=1:  # if intial play is less than one, create random search of objects for treasure 
             n = random.randint(0,len(obstacles)-1) # chooses random object within obstacle array. index 0 - 8 but -1, because 7 landmarks 
@@ -194,18 +195,18 @@ class Treasure:
                 x1,y1,x2,y2=canvas.coords(obstacles[n].lndmrk) # place within middle of random object chosen.
                 self.x = (x1+x2)/2 # average of the x axis for object
                 self.y = (y1+y2)/2 # average of the y axis for object to get centre
-                obstacles[n].treasure = True # random obstacle has treasure inside it 
+                obstacles[n].treasure = True # random obstacle has treasure inside it
+                obstacles[n].treasureID = self.id
             else:
                 self.checkLandmark() # checks landmarks if there is a treasure present, if so choose another. 
         
     def DrawTreasure(self,canvas): #creating the attributes for the treasure
         self.checkLandmark() # call checkLandmark to make sure no treasure is present before creating 
-        self.shape = canvas.create_oval(self.x,self.y,self.x + self.size, self.y + self.size,outline = self.colour, fill=self.colour,tag= "Treasure")
-        # creating object, size goes against each x and y coordinates. tag inplace to call for deletion 
-
+        self.shape = canvas.create_oval(self.x,self.y,self.x + self.size, self.y + self.size,outline = self.colour, fill=self.colour,tag=self.id)
+        # creating object, size goes against each x and y coordinates. tag inplace to call for deletion
 
         
-class Timer():
+class Timer:
     def __init__(self, label):
         self.second = 0
         self.minute = 0
@@ -220,12 +221,9 @@ class Timer():
         self.stop = True
         
     def Count(self):
-        # condition - if the program is running
         if self.stop == False:
-            # second increments by 1
             self.second = self.second + 1
             if self.second == 60:
-                # once the timer reaches 60 seconds, a minute is reached and the seconds is set back to 0 to repeat process
                 self.minute = self.minute + 1
                 self.second = 0
             if self.minute == 60:
@@ -239,7 +237,6 @@ class Timer():
                 light3.ChangeLight()
                 light4.ChangeLight()
 
-            # formatting of timer display
             if self.hour < 10:
                 if self.minute < 10:
                     if self.second < 10:
@@ -385,6 +382,9 @@ def Start():
         global rb1T
         global rb2T
         global m
+        global treasuretest
+        global R1
+        global R2
         main = Timer(timer)
         rb1T = Timer(rb1Timer)
         rb2T = Timer(rb2Timer)
@@ -401,6 +401,8 @@ def Start():
         R1.robotSpawn()
         R1.robotMove(obstacles)
         
+        
+        
 def Stop():
     global main
     global rb1T
@@ -410,7 +412,11 @@ def Stop():
     main.Stop()
     rb1T.Stop()
     rb2T.Stop()
-    canvas.delete("Treasure")
+    canvas.delete("Treasure0")
+    canvas.delete("Treasure1")
+    canvas.delete("Treasure2")
+    canvas.delete("Treasure3")
+    
     
 def Map1():
     global SelectedMap
