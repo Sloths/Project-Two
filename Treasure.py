@@ -536,28 +536,28 @@ def Stop():
     canvas.delete("Treasure3")
     canvas.delete("robotTag")
     
-    
+# assigning a value to variable for map selection    
 def Map1():
     global SelectedMap
-    SelectedMap = 1                         # command=Map1
+    SelectedMap = 1                         
 
 def Map2():
     global SelectedMap
-    SelectedMap = 2                         # command=Map2
-
+    SelectedMap = 2                         
 def Map3():
     global SelectedMap
-    SelectedMap = 3
+    SelectedMap = 3			 
 
 def Map4():
     global SelectedMap
-    SelectedMap = 4
+    SelectedMap = 4			 
 
 class Map():
     def __init__(self, SelectedMap):
         self.SelectedMap = SelectedMap
 
-    def LoadMap(self):
+# function created for map selection and assigned landmarks
+    def LoadMap(self): 			 
         if self.SelectedMap == 1:
             MapOneLandMarks()
         elif self.SelectedMap == 2:
@@ -567,6 +567,7 @@ class Map():
         elif self.SelectedMap == 4:
             MapFourLandMarks()
 
+# function created for clear the initial map and assigned landmarks
     def ClearMap(self):
         global canvas
         canvas.delete("Landmark")
