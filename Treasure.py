@@ -176,7 +176,7 @@ class Robot:
 
 class Treasure:
    #create random spawn location of treasure, coordinates need adjusting with landmarks 
-    def __init__(self, x=0,y=0,size = 12,colour='#ffd700'):
+    def __init__(self,n, x=0,y=0,size = 12,colour='#ffd700'):
         
         self.colour = colour
         self.size = size
