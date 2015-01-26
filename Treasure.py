@@ -104,7 +104,7 @@ class Robot:
         
 
     def robotSpawn(self):
-        self.robot = canvas.create_rectangle(self.rXPos, self.rYPos, self.rXPos + 10, self.rYPos + 10, fill = "cyan", outline = "blue")
+        self.robot = canvas.create_rectangle(self.rXPos, self.rYPos, self.rXPos + 10, self.rYPos + 10, fill = "cyan", outline = "blue", tag = "robotTag")
 
     def robotMove(self, treasures):
 
@@ -115,18 +115,149 @@ class Robot:
                 x1, y1, x2, y2 = canvas.coords(self.robot)
 
                 # GENERAL ROBOT MOVEMENT
-                if x2 < tx1:
-                    self.vx = 10.0
-                    self.vy = 0.0
-                if x1 > tx2:
-                    self.vx = -10.0
-                    self.vy = 0.0
-                if y2 < ty1:
-                    self.vy = 5.0
-                    self.vx = 0.0
-                if y1 > ty2:
-                    self.vy = -5.0
-                    self.vx = 0.0
+                if x1 > 0.0 and x2 < (213.5 - 10.0): # Checks if Robot is in section 1.
+                    tag = str(canvas.gettags(section1))
+                    tag = tag.replace("('", "")
+                    tag = tag.replace("',)", "")
+                    if tag == "Red": # Check is section 1 is red.
+                        self.vx = 0.0
+                        self.vy = 0.0
+                                        
+                    elif tag == "Amber": 
+                        if x2 < tx1:
+                            self.vx = 5.0
+                            self.vy = 0.0
+                        if x1 > tx2:
+                            self.vx = -5.0
+                            self.vy = 0.0
+                        if y2 < ty1:
+                            self.vy = 5.0
+                            self.vx = 0.0
+                        if y1 > ty2:
+                            self.vy = -5.0
+                            self.vx = 0.0
+                                                
+                    elif tag == "Green":
+                        if x2 < tx1:
+                            self.vx = 10.0
+                            self.vy = 0.0
+                        if x1 > tx2:
+                            self.vx = -10.0
+                            self.vy = 0.0
+                        if y2 < ty1:
+                            self.vy = 10.0                        
+                            self.vx = 0.0
+                        if y1 > ty2:
+                            self.vy = -10.0
+                            self.vx = 0.0
+
+                if x1 > (213.5 + 10.0) and x2 < (427.0 - 10.0): # Checks if Robot is in section 1.
+                    tag = str(canvas.gettags(section2))
+                    tag = tag.replace("('", "")
+                    tag = tag.replace("',)", "")  
+                    if tag == "Red": # Check is section 1 is red.
+                        self.vx = 0.0
+                        self.vy = 0.0
+                        
+                    elif tag == "Amber": 
+                        if x2 < tx1:
+                            self.vx = 5.0
+                            self.vy = 0.0
+                        if x1 > tx2:
+                            self.vx = -5.0
+                            self.vy = 0.0
+                        if y2 < ty1:
+                            self.vy = 5.0
+                            self.vx = 0.0
+                        if y1 > ty2:
+                            self.vy = -5.0
+                            self.vx = 0.0
+                                                
+                    elif tag == "Green":
+                        if x2 < tx1:
+                            self.vx = 10.0
+                            self.vy = 0.0
+                        if x1 > tx2:
+                            self.vx = -10.0
+                            self.vy = 0.0
+                        if y2 < ty1:
+                            self.vy = 10.0
+                            self.vx = 0.0
+                        if y1 > ty2:
+                            self.vy = -10.0
+                            self.vx = 0.0
+
+                if x1 > (427.0 + 10.0) and x2 < (640.5 - 10.0): # Checks if Robot is in section 1.
+                    tag = str(canvas.gettags(section3))
+                    tag = tag.replace("('", "")
+                    tag = tag.replace("',)", "") 
+                    if tag == "Red": # Check is section 1 is red.
+                        self.vx = 0.0
+                        self.vy = 0.0               
+                    elif tag == "Amber": 
+                        if x2 < tx1:
+                            self.vx = 5.0
+                            self.vy = 0.0
+                        if x1 > tx2:
+                            self.vx = -5.0
+                            self.vy = 0.0
+                        if y2 < ty1:
+                            self.vy = 5.0
+                            self.vx = 0.0
+                        if y1 > ty2:
+                            self.vy = -5.0
+                            self.vx = 0.0
+                                                
+                    elif tag == "Green":
+                        if x2 < tx1:
+                            self.vx = 10.0
+                            self.vy = 0.0
+                        if x1 > tx2:
+                            self.vx = -10.0
+                            self.vy = 0.0
+                        if y2 < ty1:
+                            self.vy = 10.0
+                            self.vx = 0.0
+                        if y1 > ty2:
+                            self.vy = -10.0
+                            self.vx = 0.0
+
+                if x1 > (640.5 + 10.0) and x2 < (854.0 - 10.0): # Checks if Robot is in section 1.
+                    tag = str(canvas.gettags(section4))
+                    tag = tag.replace("('", "")
+                    tag = tag.replace("',)", "")   
+                    if str(canvas.gettags(section3)) == "Red": # Check is section 1 is red.
+                        self.vx = 0.0
+                        self.vy = 0.0
+                        
+                    elif tag == "Amber": 
+                        if x2 < tx1:
+                            self.vx = 5.0
+                            self.vy = 0.0
+                        if x1 > tx2:
+                            self.vx = -5.0
+                            self.vy = 0.0
+                        if y2 < ty1:
+                            self.vy = 5.0
+                            self.vx = 0.0
+                        if y1 > ty2:
+                            self.vy = -5.0
+                            self.vx = 0.0
+                                                
+                    elif tag == "Green":
+                        if x2 < tx1:
+                            self.vx = 10.0
+                            self.vy = 0.0
+                        if x1 > tx2:
+                            self.vx = -10.0
+                            self.vy = 0.0
+                        if y2 < ty1:
+                            self.vy = 10.0
+                            self.vx = 0.0
+                        if y1 > ty2:
+                            self.vy = -10.0
+                            self.vx = 0.0
+			
 
                 # LOCATION CHECK
                 if x2 > tx1 - 20.0 and x2 < tx2 + 20.0 and y1 > ty1 - 20.0 and y2 < ty2 + 20.0:
@@ -144,16 +275,11 @@ class Robot:
                 time.sleep(0.1)
             
 
-        '''  
+          
         # TRAFFIC LIGHT RESPONSE               
-        if x1 > 0.0 and x2 < (213.5 - 10.0): # Checks if Robot is in section 1.
-            if section1 == "3": # Check is section 1 is red.
-                self.vx = 0.0
-                self.vy = 0.0
-            if section1 == "2":
-                self.vx = 5.0
-                self.vy = 2.5
-        if x1 > (213.5 + 10.0) and x2 < (427.0 - 10.0):
+        
+					
+        '''if x1 > (213.5 + 10.0) and x2 < (427.0 - 10.0):
             if section2 == "3":
                 self.vx = 0.0
                 self.vy = 0.0
@@ -416,6 +542,7 @@ def Stop():
     canvas.delete("Treasure1")
     canvas.delete("Treasure2")
     canvas.delete("Treasure3")
+    canvas.delete("robotTag")
     
     
 def Map1():
@@ -529,7 +656,6 @@ rb2Timer.place(x=735, y=607)
 
 #Padds canvas
 canvas.pack(padx=10, pady=10)
-
 
 light1 = Light(1)
 light2 = Light(2)
