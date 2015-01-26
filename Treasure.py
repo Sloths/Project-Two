@@ -34,6 +34,7 @@ class landmark:                                   # Landmark class being created
         self.colour  = "green"                      # the background colour for all landmarks is set here to green in the user interface
         self.outline = "black"                      # the outline colour of all landmarks is set to black in the user interface
         self.treasure = False                       #  setting the variable with the value of 'false'
+        self.treasureID = ""
         
         self.lndmrk = canvas.create_rectangle(self.x1,self.y1,self.x2,self.y2, fill=self.colour, outline = self.outline, tag="Landmark") # creates the landmark with the given coordinates and colours, but they're pre-set.
         
@@ -106,8 +107,8 @@ class Robot:
 
     def robotMove(self, treasures):
 
-        for t in treasures:
-            tx1, ty1, tx2, ty2 = canvas.coords(t.shape)
+        for o in obstacles:
+            tx1, ty1, tx2, ty2 = canvas.coords(o.lndmrk)
             while t.found != True:
                 print "."
                 x1, y1, x2, y2 = canvas.coords(self.robot)
@@ -115,17 +116,27 @@ class Robot:
                 # GENERAL ROBOT MOVEMENT
                 if x2 < tx1:
                     self.vx = 10.0
+                    self.vy = 0.0
                 if x1 > tx2:
                     self.vx = -10.0
+                    self.vy = 0.0
                 if y2 < ty1:
                     self.vy = 5.0
+                    self.vx = 0.0
                 if y1 > ty2:
                     self.vy = -5.0
+                    self.vx = 0.0
+                    
+                # LOCATION CHECK
+                if x2 > tx1 - 20.0 and x2 < tx2 + 20.0 and y1 > ty1 - 20.0 and y2 < ty2 + 20.0:
+                    o.treasure = False
+                    ID = o.treasureID 
+                    canvas.delete(ID)
+                    o.treasureID = ""   
                     
                 self.rXPos += self.vx
                 self.rYPos += self.vy
 
-                print "D: ", canvas.coords(self.robot)
                 canvas.delete(self.robot)
                 self.robotSpawn()
                 canvas.update()
@@ -170,6 +181,9 @@ class Treasure:
         self.colour = colour
         self.size = size
         self.found = False
+        self.n = n
+        self.id = "Treasure" + str(n)
+        print self.id
         
     def checkLandmark(self, ):
         global intPlay 
@@ -381,11 +395,11 @@ def Start():
         m.LoadMap()
         treasuretest= [] # creating an empty array for number of treasures using for loop 
         for n in range (4): #giving a range between 0 - 4 
-            treasuretest.append(Treasure()) #update empty array with given argument 
+            treasuretest.append(Treasure(n)) #update empty array with given argument 
             treasuretest[n].DrawTreasure(canvas)# draw treasure onto canvas 
         R1 = Robot()
         R1.robotSpawn()
-        R1.robotMove(treasuretest)
+        R1.robotMove(obstacles)
         
 def Stop():
     global main
