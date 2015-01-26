@@ -41,8 +41,8 @@ class landmark:                                   # Landmark class being created
 
 def MapOneLandMarks():                              #creating a new function which will store all the landmarks in the first map
     global obstacles 
-    obstacles = [                                    # this creates the array which will contain the landmarks for the first map
-        # this code creates the first landmark                        
+    obstacles = [
+        # this code within the array creates the first landmark                        
         landmark(30, 50, 180, 95),                 
         landmark(600,50,800,200), 
         landmark(150,200,370,250), 
@@ -50,13 +50,11 @@ def MapOneLandMarks():                              #creating a new function whi
         landmark(50,350,110,400),            
         landmark(450,250,600,400),        
         landmark(700,250,750,380)]
-    
-#MapOneLandMarks()                                  # this calls the first map function which loads and creates the first map
-
+        
 def MapTwoLandMarks():                              # this function stores all the landmarks for the second map
     global obstacles
     obstacles = [
-        # This code creates the landmarks for the second map
+        # This code within the array draws the landmarks for the second map
         landmark(50, 200, 350, 30),
         landmark(450, 100, 750, 35),
         landmark(400, 280, 780, 230),           
@@ -64,9 +62,7 @@ def MapTwoLandMarks():                              # this function stores all t
         landmark(30, 230, 80, 400),
         landmark(220, 250, 290, 290),
         landmark(690, 400, 750, 350)]
-#MapTwoLandMarks()                                   # this line of code calls the funcion which creates and draws out the landmarks for the second map
-
-
+       
 def MapThreeLandMarks():
     global obstacles
     obstacles = [
@@ -78,9 +74,6 @@ def MapThreeLandMarks():
         landmark(750, 350, 800, 400),
         landmark(220, 150, 550, 300),
         landmark(40, 350, 90, 400)]
-    
-#MapThreeLandMarks()
-
 
 def MapFourLandMarks():
     global obstacles
@@ -93,7 +86,6 @@ def MapFourLandMarks():
         landmark(130, 370, 260, 420),
         landmark(130, 200, 280, 250),
         landmark(670, 180, 800, 300)]
-#MapFourLandMarks()
 
 class Robot:
     def __init__(self):
