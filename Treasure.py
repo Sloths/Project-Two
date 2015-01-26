@@ -300,9 +300,9 @@ class Treasure():
         self.colour = colour
         self.size = size
         self.found = False
-        self.n = n
-        self.id = "Treasure" + str(n)
-        print self.id
+        self.n = n # the given numbe rof treasures to give IDs
+        self.id = "Treasure" + str(n)  # giving the treasure different IDs, easier for robot to detect 
+        #print self.id - put in place to test Treasure IDs
         
     def checkLandmark(self):
         global intPlay 
@@ -500,7 +500,7 @@ def Start():
         global rb1T
         global rb2T
         global m
-        global treasuretest
+        global spawnTreasure
         global R1
         global R2
         main = Timer(timer)
@@ -511,10 +511,10 @@ def Start():
         rb2T.Count()
         m = Map(SelectedMap)
         m.LoadMap()
-        treasuretest= [] # creating an empty array for number of treasures using for loop 
+        spawnTreasure= [] # creating an empty array for number of treasures using for loop 
         for n in range (4): #giving a range between 0 - 4 
-            treasuretest.append(Treasure(n)) #update empty array with given argument 
-            treasuretest[n].DrawTreasure(canvas)# draw treasure onto canvas 
+            spawnTreasure.append(Treasure(n)) #update empty array with given argument 
+            spawnTreasure[n].DrawTreasure(canvas)# draw treasure onto canvas 
         R1 = Robot()
         R1.robotSpawn()
         R1.robotMove(obstacles)
