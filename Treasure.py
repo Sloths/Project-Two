@@ -8,18 +8,15 @@ canvas = Canvas(window, width=854, height=480, bg='white')
 canvas.pack()
 
 #Creates window and centers to any screen
-window.geometry('{}x{}'. format(874, 670))
-window.withdraw()
-window.update_idletasks()
-w = window.winfo_screenwidth()
-h = window.winfo_screenheight() - 70
-winsize = tuple(int(_) for _ in window.geometry().split('+')[0].split('x'))
-x = w/2 - winsize[0]/2
-y = h/2 - winsize[1]/2
-window.geometry("%dx%d+%d+%d" % (winsize + (x, y)))
-window.title('Sloths - Virtual Robot Treasure Hunt')
-window.resizable(width=FALSE, height=FALSE)
-window.deiconify()
+window.geometry('{}x{}'. format(874, 670)) #Setting size of window
+window.withdraw() #Hide window to stop showing in wrong position
+window.update_idletasks() #Request screen size from sstem
+x = (window.winfo_screenwidth() - window.winfo_reqwidth()) / 2 #Calculate screen width
+y = ((window.winfo_screenheight() - window.winfo_reqheight()) / 2) - 70 #Calculate screen height
+window.geometry("+%d+%d" % (x, y)) #Change position of window
+window.title('Sloths - Virtual Robot Treasure Hunt') #Adds name to window
+window.resizable(width=FALSE, height=FALSE) #Disabled resizable function of window
+window.deiconify() #Redraw window in correct position
 
 intPlay = 0
 SelectedMap = 1
@@ -97,6 +94,10 @@ class Robot:
         self.y1 = 0.0
         self.x2 = 0.0
         self.y2 = 0.0
+        self.status = "" #String to display status of robot
+        self.points = 0 #Integer to display points of robot
+        self.run = False #Used for when robot should run
+        self.done = False #Used for when robot is done i.e. got all treasures
         
 
     def robotSpawn(self):
@@ -104,179 +105,209 @@ class Robot:
         self.rXPos = random.randint(1, 100)
         self.rYPos = random.randint(1, 100)
         self.robot = canvas.create_rectangle(self.rXPos, self.rYPos, self.rXPos + 10, self.rYPos + 10, fill = "cyan", outline = "blue", tag = "robotTag")
+        self.run = True
 
     def robotDraw(self):
         self.robot = canvas.create_rectangle(self.rXPos, self.rYPos, self.rXPos + 10, self.rYPos + 10, fill = "cyan", outline = "blue", tag = "robotTag")        
 
     def robotMove(self, treasures):
-        for o in obstacles: # Iterate through obstacle list
-            ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk) # Creating coordinates for landmark object
-            while o.treasure == True:
-                
-                self.x1, self.y1, self.x2, self.y2 = canvas.coords(self.robot) # Creating coordinates for robot object
-
-                # GENERAL ROBOT MOVEMENT
-                if self.x1 > 0.0 and self.x2 < (213.5 - 10.0): # Is robot in section 1?
-                    tag = str(canvas.gettags(section1))
-                    tag = tag.replace("('", "")
-                    tag = tag.replace("',)", "")
-                    
-                    if tag == "Red": # If section 1 is red, stop robot movement.
-                        self.vx = 0.0
-                        self.vy = 0.0
-                                        
-                    elif tag == "Amber": # If section 1 is amber, decrease movement speed by half.
-                        if self.x2 < ox1:
-                            self.vx = 5.0
-                            self.vy = 0.0
-                        if self.x1 > ox2:
-                            self.vx = -5.0
-                            self.vy = 0.0
-                        if self.y2 < oy1:
-                            self.vy = 5.0
-                            self.vx = 0.0
-                        if self.y1 > oy2:
-                            self.vy = -5.0
-                            self.vx = 0.0
-                                                
-                    elif tag == "Green": # If section 1 is green, movement speed is normal.
-                        if self.x2 < ox1:
-                            self.vx = 10.0
-                            self.vy = 0.0
-                        if self.x1 > ox2:
-                            self.vx = -10.0
-                            self.vy = 0.0
-                        if self.y2 < oy1:
-                            self.vy = 10.0                        
-                            self.vx = 0.0
-                        if self.y1 > oy2:
-                            self.vy = -10.0
-                            self.vx = 0.0
-
-                if self.x1 > (213.5 + 10.0) and self.x2 < (427.0 - 10.0): # Is robot in section 2?
-                    tag = str(canvas.gettags(section2))
-                    tag = tag.replace("('", "")
-                    tag = tag.replace("',)", "")
-                    
-                    if tag == "Red": # If section 2 is red, stop robot movement.
-                        self.vx = 0.0
-                        self.vy = 0.0
+        if self.run == True:
+            if self.done == False:
+                for o in obstacles: # Iterate through obstacle list
+                    ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk) # Creating coordinates for landmark object
+                    while o.treasure == True:
                         
-                    elif tag == "Amber": # If section 2 is amber, decrease movement speed by half.
-                        if self.x2 < ox1:
-                            self.vx = 5.0
-                            self.vy = 0.0
-                        if self.x1 > ox2:
-                            self.vx = -5.0
-                            self.vy = 0.0
-                        if self.y2 < oy1:
-                            self.vy = 5.0
-                            self.vx = 0.0
-                        if self.y1 > oy2:
-                            self.vy = -5.0
-                            self.vx = 0.0
-                                                
-                    elif tag == "Green": # If section 2 is green, movement speed is normal.
-                        if self.x2 < ox1:
-                            self.vx = 10.0
-                            self.vy = 0.0
-                        if self.x1 > ox2:
-                            self.vx = -10.0
-                            self.vy = 0.0
-                        if self.y2 < oy1:
-                            self.vy = 10.0
-                            self.vx = 0.0
-                        if self.y1 > oy2:
-                            self.vy = -10.0
-                            self.vx = 0.0
+                        self.x1, self.y1, self.x2, self.y2 = canvas.coords(self.robot) # Creating coordinates for robot object
 
-                if self.x1 > (427.0 + 10.0) and self.x2 < (640.5 - 10.0): # Is robot in section 3?
-                    tag = str(canvas.gettags(section3))
-                    tag = tag.replace("('", "")
-                    tag = tag.replace("',)", "")
-                    
-                    if tag == "Red": # If section 3 is red, stop robot movement.
-                        self.vx = 0.0
-                        self.vy = 0.0               
-                    elif tag == "Amber": # If section 3 is amber, decrease movement speed by half.
-                        if self.x2 < ox1:
-                            self.vx = 5.0
-                            self.vy = 0.0
-                        if self.x1 > ox2:
-                            self.vx = -5.0
-                            self.vy = 0.0
-                        if self.y2 < oy1:
-                            self.vy = 5.0
-                            self.vx = 0.0
-                        if self.y1 > oy2:
-                            self.vy = -5.0
-                            self.vx = 0.0
+                        # GENERAL ROBOT MOVEMENT
+                        if self.x1 > 0.0 and self.x2 < (213.5 - 10.0): # Is robot in section 1?
+                            tag = str(canvas.gettags(section1))
+                            tag = tag.replace("('", "")
+                            tag = tag.replace("',)", "")
+                            self.status = tag
+                            
+                            if tag == "Red": # If section 1 is red, stop robot movement.
+                                self.vx = 0.0
+                                self.vy = 0.0
                                                 
-                    elif tag == "Green": # If section 3 is green, movement speed is normal.
-                        if self.x2 < ox1:
-                            self.vx = 10.0
-                            self.vy = 0.0
-                        if self.x1 > ox2:
-                            self.vx = -10.0
-                            self.vy = 0.0
-                        if self.y2 < oy1:
-                            self.vy = 10.0
-                            self.vx = 0.0
-                        if self.y1 > oy2:
-                            self.vy = -10.0
-                            self.vx = 0.0
+                            elif tag == "Amber": # If section 1 is amber, decrease movement speed by half.
+                                if self.x2 < ox1:
+                                    self.vx = 5.0
+                                    self.vy = 0.0
+                                if self.x1 > ox2:
+                                    self.vx = -5.0
+                                    self.vy = 0.0
+                                if self.y2 < oy1:
+                                    self.vy = 5.0
+                                    self.vx = 0.0
+                                if self.y1 > oy2:
+                                    self.vy = -5.0
+                                    self.vx = 0.0
+                                                        
+                            elif tag == "Green": # If section 1 is green, movement speed is normal.
+                                if self.x2 < ox1:
+                                    self.vx = 10.0
+                                    self.vy = 0.0
+                                if self.x1 > ox2:
+                                    self.vx = -10.0
+                                    self.vy = 0.0
+                                if self.y2 < oy1:
+                                    self.vy = 10.0                        
+                                    self.vx = 0.0
+                                if self.y1 > oy2:
+                                    self.vy = -10.0
+                                    self.vx = 0.0
 
-                if self.x1 > (640.5 + 10.0) and self.x2 < (854.0 - 10.0): # Is robot in section 4?
-                    tag = str(canvas.gettags(section4))
-                    tag = tag.replace("('", "")
-                    tag = tag.replace("',)", "")
-                    
-                    if str(canvas.gettags(section3)) == "Red": # If section 4 is red, stop robot movement.
-                        self.vx = 0.0
-                        self.vy = 0.0
+                        if self.x1 > (213.5 + 10.0) and self.x2 < (427.0 - 10.0): # Is robot in section 2?
+                            tag = str(canvas.gettags(section2))
+                            tag = tag.replace("('", "")
+                            tag = tag.replace("',)", "")
+                            self.status = tag
+                            
+                            if tag == "Red": # If section 2 is red, stop robot movement.
+                                self.vx = 0.0
+                                self.vy = 0.0
+                                
+                            elif tag == "Amber": # If section 2 is amber, decrease movement speed by half.
+                                if self.x2 < ox1:
+                                    self.vx = 5.0
+                                    self.vy = 0.0
+                                if self.x1 > ox2:
+                                    self.vx = -5.0
+                                    self.vy = 0.0
+                                if self.y2 < oy1:
+                                    self.vy = 5.0
+                                    self.vx = 0.0
+                                if self.y1 > oy2:
+                                    self.vy = -5.0
+                                    self.vx = 0.0
+                                                        
+                            elif tag == "Green": # If section 2 is green, movement speed is normal.
+                                if self.x2 < ox1:
+                                    self.vx = 10.0
+                                    self.vy = 0.0
+                                if self.x1 > ox2:
+                                    self.vx = -10.0
+                                    self.vy = 0.0
+                                if self.y2 < oy1:
+                                    self.vy = 10.0
+                                    self.vx = 0.0
+                                if self.y1 > oy2:
+                                    self.vy = -10.0
+                                    self.vx = 0.0
+
+                        if self.x1 > (427.0 + 10.0) and self.x2 < (640.5 - 10.0): # Is robot in section 3?
+                            tag = str(canvas.gettags(section3))
+                            tag = tag.replace("('", "")
+                            tag = tag.replace("',)", "")
+                            self.status = tag
+                            
+                            if tag == "Red": # If section 3 is red, stop robot movement.
+                                self.vx = 0.0
+                                self.vy = 0.0               
+                            elif tag == "Amber": # If section 3 is amber, decrease movement speed by half.
+                                if self.x2 < ox1:
+                                    self.vx = 5.0
+                                    self.vy = 0.0
+                                if self.x1 > ox2:
+                                    self.vx = -5.0
+                                    self.vy = 0.0
+                                if self.y2 < oy1:
+                                    self.vy = 5.0
+                                    self.vx = 0.0
+                                if self.y1 > oy2:
+                                    self.vy = -5.0
+                                    self.vx = 0.0
+                                                        
+                            elif tag == "Green": # If section 3 is green, movement speed is normal.
+                                if self.x2 < ox1:
+                                    self.vx = 10.0
+                                    self.vy = 0.0
+                                if self.x1 > ox2:
+                                    self.vx = -10.0
+                                    self.vy = 0.0
+                                if self.y2 < oy1:
+                                    self.vy = 10.0
+                                    self.vx = 0.0
+                                if self.y1 > oy2:
+                                    self.vy = -10.0
+                                    self.vx = 0.0
+
+                        if self.x1 > (640.5 + 10.0) and self.x2 < (854.0 - 10.0): # Is robot in section 4?
+                            tag = str(canvas.gettags(section4))
+                            tag = tag.replace("('", "")
+                            tag = tag.replace("',)", "")
+                            self.status = tag
+                            
+                            if tag == "Red": # If section 4 is red, stop robot movement.
+                                self.vx = 0.0
+                                self.vy = 0.0
+                                
+                            elif tag == "Amber": # If section 4 is amber, decrease movement speed by half.
+                                if self.x2 < ox1:
+                                    self.vx = 5.0
+                                    self.vy = 0.0
+                                if self.x1 > ox2:
+                                    self.vx = -5.0
+                                    self.vy = 0.0
+                                if self.y2 < oy1:
+                                    self.vy = 5.0
+                                    self.vx = 0.0
+                                if self.y1 > oy2:
+                                    self.vy = -5.0
+                                    self.vx = 0.0
+                                                        
+                            elif tag == "Green": # If section 4 is green, movement speed is normal.
+                                if self.x2 < ox1:
+                                    self.vx = 10.0
+                                    self.vy = 0.0
+                                if self.x1 > ox2:
+                                    self.vx = -10.0
+                                    self.vy = 0.0
+                                if self.y2 < oy1:
+                                    self.vy = 10.0
+                                    self.vx = 0.0
+                                if self.y1 > oy2:
+                                    self.vy = -10.0
+                                    self.vx = 0.0			
+
+                        # LOCATION CHECK
+                        if self.x2 > ox1 - 20.0 and self.x2 < ox2 + 20.0 and self.y1 > oy1 - 20.0 and self.y2 < oy2 + 20.0:
+                            o.treasure = False # If robot contacts landmark with treasure
+                            ID = o.treasureID 
+                            canvas.delete(ID) # Delete treasure object from list
+                            o.treasureID = ""
+                            self.points = self.points + 100 #Add 100 to points as treasure has been found
+                            
+                        self.rXPos += self.vx                
+                        self.rYPos += self.vy
                         
-                    elif tag == "Amber": # If section 4 is amber, decrease movement speed by half.
-                        if self.x2 < ox1:
-                            self.vx = 5.0
-                            self.vy = 0.0
-                        if self.x1 > ox2:
-                            self.vx = -5.0
-                            self.vy = 0.0
-                        if self.y2 < oy1:
-                            self.vy = 5.0
-                            self.vx = 0.0
-                        if self.y1 > oy2:
-                            self.vy = -5.0
-                            self.vx = 0.0
-                                                
-                    elif tag == "Green": # If section 4 is green, movement speed is normal.
-                        if self.x2 < ox1:
-                            self.vx = 10.0
-                            self.vy = 0.0
-                        if self.x1 > ox2:
-                            self.vx = -10.0
-                            self.vy = 0.0
-                        if self.y2 < oy1:
-                            self.vy = 10.0
-                            self.vx = 0.0
-                        if self.y1 > oy2:
-                            self.vy = -10.0
-                            self.vx = 0.0			
-
-                # LOCATION CHECK
-                if self.x2 > ox1 - 20.0 and self.x2 < ox2 + 20.0 and self.y1 > oy1 - 20.0 and self.y2 < oy2 + 20.0:
-                    o.treasure = False # If robot contacts landmark with treasure
-                    ID = o.treasureID 
-                    canvas.delete(ID) # Delete treasure object from list
-                    o.treasureID = ""                    
-                    
-                self.rXPos += self.vx                
-                self.rYPos += self.vy
+                        canvas.delete(self.robot)
+                        self.robotDraw()                
+                        canvas.update()
+                        self.updateInfo()
+                        time.sleep(0.1)
+                self.done = True
+                self.updateInfo()
                 
-                canvas.delete(self.robot)
-                self.robotDraw()                
-                canvas.update()
-                time.sleep(0.1)
+    def robotStop(self): #Function to stop robot by changing values
+        self.run = False #Run changes to false to stop
+        self.done = False #Done changes back to default
+        canvas.delete("robotTag") #Deletes robot from canvas
+            
+    def updateInfo(self): #Function to update info about robot in GUI
+        if self.done == True: #If robot is done
+            self.run = False
+            rb1Status.config(text='Status: Done') #Change status to done
+            global rb1T
+            rb1T.Done() #Stop timer but still display time
+        elif self.run == True: #Constantly update info if robot is running
+            rb1Position.config(text='Position: x:' + str(int(self.x1)) + " y:" + str(int(self.y1))) #Change x/y position info
+            rb1Status.config(text='Status: ' + self.status) #Chnage status
+            #Yet to add other labels yet
+            rb1Points.config(text='Points: ' + str(self.points)) #Update points
+        else:
+            ResetLabels() #Run function to reset labels to default if robot not running anymore
             
 class Treasure():
    #create random spawn location of treasure, coordinates need adjusting with landmarks 
@@ -314,14 +345,23 @@ class Timer:
         self.second = 0
         self.minute = 0
         self.hour = 0
+        self.time = ""
         self.stop = False
+        self.done = False
         self.label = label
         self.sections = {}
 
     def Stop(self):
+        #used to stop timer and get rid of time i.e. when game is done
         global intPlay
         intPlay = 0
         self.stop = True
+        self.done = False
+        
+    def Done(self): #Change to done if robot is done
+        #used so that timer stops but still displays time
+        self.stop = True
+        self.done = True
         
     def Count(self):
         if self.stop == False:
@@ -343,40 +383,46 @@ class Timer:
             if self.hour < 10:
                 if self.minute < 10:
                     if self.second < 10:
-                        exec str(self.label.config(text=("0" + str(self.hour) + ":0" + str(self.minute) + ":0" + str(self.second))))
+                        self.time = "0" + str(self.hour) + ":0" + str(self.minute) + ":0" + str(self.second)
                     else:
-                        exec str(self.label.config(text=("0" + str(self.hour) + ":0" + str(self.minute) + ":" + str(self.second))))
+                        self.time = "0" + str(self.hour) + ":0" + str(self.minute) + ":" + str(self.second)
                 else:
                     if self.second < 10:
-                        exec str(self.label.config(text=("0" + str(self.hour) + ":" + str(self.minute) + ":0" + str(self.second))))
+                        self.time = "0" + str(self.hour) + ":" + str(self.minute) + ":0" + str(self.second)
                     else:
-                        exec str(self.label.config(text=("0" + str(self.hour) + ":" + str(self.minute) + ":" + str(self.second))))
+                        self.time = "0" + str(self.hour) + ":" + str(self.minute) + ":" + str(self.second)
             else:
                 if self.minute < 10:
                     if self.second < 10:
-                         exec str(self.label.config(text=(str(self.hour) + ":0" + str(self.minute) + ":0" + str(self.second))))
+                        elf.time = str(self.hour) + ":0" + str(self.minute) + ":0" + str(self.second)
                     else:
-                        exec str(self.label.config(text=(str(self.hour) + ":0" + str(self.minute) + ":" + str(self.second))))
+                        self.time = str(self.hour) + ":0" + str(self.minute) + ":" + str(self.second)
                 else:
                     if self.second < 10:
-                        exec str(self.label.config(text=(str(self.hour) + ":" + str(self.minute) + ":0" + str(self.second))))
+                        self.time = str(self.hour) + ":" + str(self.minute) + ":0" + str(self.second)
                     else:
-                        exec str(self.label.config(text=(str(self.hour) + ":" + str(self.minute) + ":" + str(self.second))))
+                        self.time = str(self.hour) + ":" + str(self.minute) + ":" + str(self.second)
             # 1000 ticks == 1 second delay
+            exec str(self.label.config(text=(self.time)))
             self.label.after(1000, self.Count)
         else:
-            # display of timer when Stop is pressed
-            exec str(self.label.config(text="00:00:00"))
+            if self.done == True:
+                exec str(self.label.config(text=(self.time)))
+            else:
+                # display of timer when Stop is pressed
+                exec str(self.label.config(text="00:00:00"))
 
+#Class for lights
 class Light():
     def __init__(self, number):
-        self.width = 854
-        self.height = 480
-        self.sectionWidth = 213.5
-        self.number = number
-        self.colour = ""
+        self.width = 854 #width of canvas
+        self.height = 480 #height of canvas
+        self.sectionWidth = 213.5 #width of one section (1/4 of whole width)
+        self.number = number #number of section
+        self.colour = "" #string to hold colour of section
 
-    def CreateLight(self):
+    def CreateLight(self): #Function to create the lights for GUI
+        #globalising objects to be made
         global lightcolour1
         global lightcolour2
         global lightcolour3
@@ -390,92 +436,89 @@ class Light():
         global light3Text
         global light4Text
         
-        if self.number == 1:
-            lightcolour1=canvas.create_rectangle(2, 2, self.sectionWidth, 23, fill="#2ecc71", tag="1")
-            section1=canvas.create_rectangle(0, self.height, self.sectionWidth, 23, dash=(10,10), tag="Green")
-            light1Text=Label(font=('Helvetica', 8), text='Green', bg="#2ecc71")
-            light1Text.place(x=100, y=13)
-            self.colour = "Green"
-        elif self.number == 2:
-            lightcolour2=canvas.create_rectangle(self.sectionWidth, 2, self.sectionWidth * self.number, 23, fill="#f39c12", tag="2")
-            section2=canvas.create_rectangle(self.sectionWidth, self.height, self.sectionWidth * 2, 23, dash=(10,10), tag="Amber")
-            light2Text=Label(font=('Helvetica', 8), text='Amber', bg="#f39c12")
-            light2Text.place(x=310, y=13)
-            self.colour = "Amber"
-        elif self.number == 3:
-            lightcolour3=canvas.create_rectangle(self.sectionWidth * (self.number - 1), 2, self.sectionWidth * self.number, 23, fill="#e74c3c", tag="3")
-            section3=canvas.create_rectangle(self.sectionWidth * 2, self.height, self.sectionWidth * 3, 23, dash=(10,10), tag="Red")
-            light3Text=Label(font=('Helvetica', 8), text='Red', bg="#e74c3c")
-            light3Text.place(x=530, y=13)
-            self.colour = "Red"
-        elif self.number == 4:
-            lightcolour4=canvas.create_rectangle(self.sectionWidth * (self.number - 1), 2, ((self.sectionWidth * self.number) - 1), 23, fill="#2ecc71", tag="4")
-            section4=canvas.create_rectangle(self.sectionWidth * 3, self.height, ((self.sectionWidth * 4) - 1), 23, dash=(10,10), tag="Green")
-            light4Text=Label(font=('Helvetica', 8), text='Green', bg="#2ecc71")
-            light4Text.place(x=740, y=13)
-            self.colour = "Green"
+        if self.number == 1: #if section 1, place in left most position
+            lightcolour1=canvas.create_rectangle(2, 2, self.sectionWidth, 23, fill="#2ecc71", tag="1") #Create light block and tag number
+            section1=canvas.create_rectangle(0, self.height, self.sectionWidth, 23, dash=(10,10), tag="Green") #Create dashed section and tag colour
+            light1Text=Label(font=('Helvetica', 8), text='Green', bg="#2ecc71") #Create label to match colour of section
+            light1Text.place(x=100, y=13) #Place label in correct position
+            self.colour = "Green" #Change string to hold value of light
+        elif self.number == 2: #If section 2, place in left mid position
+            lightcolour2=canvas.create_rectangle(self.sectionWidth, 2, self.sectionWidth * self.number, 23, fill="#f39c12", tag="2") #Create light block and tag number
+            section2=canvas.create_rectangle(self.sectionWidth, self.height, self.sectionWidth * 2, 23, dash=(10,10), tag="Amber") #Create dashed section and tag colour
+            light2Text=Label(font=('Helvetica', 8), text='Amber', bg="#f39c12") #Create label to match colour of section
+            light2Text.place(x=310, y=13) #Place label in correct position
+            self.colour = "Amber" #Change string to hold value of light
+        elif self.number == 3: #If section 3, place in right mid position
+            lightcolour3=canvas.create_rectangle(self.sectionWidth * (self.number - 1), 2, self.sectionWidth * self.number, 23, fill="#e74c3c", tag="3") #Create light block and tag number
+            section3=canvas.create_rectangle(self.sectionWidth * 2, self.height, self.sectionWidth * 3, 23, dash=(10,10), tag="Red") #Create dashed section and tag colour
+            light3Text=Label(font=('Helvetica', 8), text='Red', bg="#e74c3c")  #Create label to match colour of section
+            light3Text.place(x=530, y=13) #Place label in correct position
+            self.colour = "Red" #Change string to hold value of light
+        elif self.number == 4: #If section 4, place in right most position
+            lightcolour4=canvas.create_rectangle(self.sectionWidth * (self.number - 1), 2, ((self.sectionWidth * self.number) - 1), 23, fill="#2ecc71", tag="4") #Create light block and tag number
+            section4=canvas.create_rectangle(self.sectionWidth * 3, self.height, ((self.sectionWidth * 4) - 1), 23, dash=(10,10), tag="Green") #Create dashed section and tag colour
+            light4Text=Label(font=('Helvetica', 8), text='Green', bg="#2ecc71") #Create label to match colour of section
+            light4Text.place(x=740, y=13) #Place label in correct position
+            self.colour = "Green" #Change string to hold value of light
         
-    def ChangeLight(self):
-        intColour = random.randrange(1,4,1)
+    def ChangeLight(self): #Function to change lights, called in timer class count function
+        intColour = random.randrange(1,4,1) #Generate random number from 1-3
         global canvas
         
-        lightname = "lightcolour" + str(self.number)
-        section = "section" + str(self.number)
-        
-        if intColour == 1:
-            self.colour = "Green"
-            if self.number == 1:
-                light1Text.config(text='Green', bg="#2ecc71")
-                canvas.itemconfig(lightcolour1, fill="#2ecc71")
-                canvas.itemconfig(section1, tag="Green")
+        if intColour == 1: #If random number = 1 (Green)
+            self.colour = "Green" #Change value of colour string
+            if self.number == 1: #Check for section to change
+                light1Text.config(text='Green', bg="#2ecc71") #Change label text to correct value
+                canvas.itemconfig(lightcolour1, fill="#2ecc71") #Change light to correct colour
+                canvas.itemconfig(section1, tag="Green") #Change section tag to correct value
             elif self.number == 2:
-                light2Text.config(text='Green', bg="#2ecc71")
-                canvas.itemconfig(lightcolour2, fill="#2ecc71")
-                canvas.itemconfig(section2, tag="Green")
+                light2Text.config(text='Green', bg="#2ecc71") #Change label text to correct value
+                canvas.itemconfig(lightcolour2, fill="#2ecc71") #Change light to correct colour
+                canvas.itemconfig(section2, tag="Green")  #Change section tag to correct value
             elif self.number == 3:
-                light3Text.config(text='Green', bg="#2ecc71")
-                canvas.itemconfig(lightcolour3, fill="#2ecc71")
-                canvas.itemconfig(section3, tag="Green")
+                light3Text.config(text='Green', bg="#2ecc71") #Change label text to correct value
+                canvas.itemconfig(lightcolour3, fill="#2ecc71") #Change light to correct colour
+                canvas.itemconfig(section3, tag="Green") #Change section tag to correct value
             elif self.number == 4:
-                light4Text.config(text='Green', bg="#2ecc71")
-                canvas.itemconfig(lightcolour4, fill="#2ecc71")
+                light4Text.config(text='Green', bg="#2ecc71") #Change label text to correct value
+                canvas.itemconfig(lightcolour4, fill="#2ecc71") #Change light to correct colour
                 canvas.itemconfig(section4, tag="Green")
-        elif intColour == 2:
-            self.colour = "Amber"
-            if self.number == 1:
-                light1Text.config(text='Amber', bg="#f39c12")
-                canvas.itemconfig(lightcolour1, fill="#f39c12")
-                canvas.itemconfig(section1, tag="Amber")
+        elif intColour == 2: #If random number = 2 (Amber)
+            self.colour = "Amber" #Change value of colour string
+            if self.number == 1: #Check for section to change
+                light1Text.config(text='Amber', bg="#f39c12") #Change label text to correct value
+                canvas.itemconfig(lightcolour1, fill="#f39c12") #Change light to correct colour
+                canvas.itemconfig(section1, tag="Amber") #Change section tag to correct value
             elif self.number == 2:
-                light2Text.config(text='Amber', bg="#f39c12")
-                canvas.itemconfig(lightcolour2, fill="#f39c12")
-                canvas.itemconfig(section2, tag="Amber")
+                light2Text.config(text='Amber', bg="#f39c12") #Change label text to correct value
+                canvas.itemconfig(lightcolour2, fill="#f39c12") #Change light to correct colour
+                canvas.itemconfig(section2, tag="Amber") #Change section tag to correct value
             elif self.number == 3:
-                light3Text.config(text='Amber', bg="#f39c12")
-                canvas.itemconfig(lightcolour3, fill="#f39c12")
-                canvas.itemconfig(section3, tag="Amber")
+                light3Text.config(text='Amber', bg="#f39c12") #Change label text to correct value
+                canvas.itemconfig(lightcolour3, fill="#f39c12") #Change light to correct colour
+                canvas.itemconfig(section3, tag="Amber") #Change section tag to correct value
             elif self.number == 4:
-                light4Text.config(text='Amber', bg="#f39c12")
-                canvas.itemconfig(lightcolour4, fill="#f39c12")
+                light4Text.config(text='Amber', bg="#f39c12") #Change label text to correct value
+                canvas.itemconfig(lightcolour4, fill="#f39c12") #Change light to correct colour
                 canvas.itemconfig(section4, tag="Amber")
-        elif intColour == 3:
-            self.colour = "Red"
-            if self.number == 1:
-                light1Text.config(text='Red', bg="#e74c3c")
-                canvas.itemconfig(lightcolour1, fill="#e74c3c")
-                canvas.itemconfig(section1, tag="Red")
+        elif intColour == 3: #If random number = 3 (Red)
+            self.colour = "Red" #Change value of colour string
+            if self.number == 1: #Check for section to change
+                light1Text.config(text='Red', bg="#e74c3c") #Change label text to correct value
+                canvas.itemconfig(lightcolour1, fill="#e74c3c") #Change light to correct colour
+                canvas.itemconfig(section1, tag="Red") #Change section tag to correct value
             elif self.number == 2:
-                light2Text.config(text='Red', bg="#e74c3c")
-                canvas.itemconfig(lightcolour2, fill="#e74c3c")
-                canvas.itemconfig(section2, tag="Red")
+                light2Text.config(text='Red', bg="#e74c3c") #Change label text to correct value
+                canvas.itemconfig(lightcolour2, fill="#e74c3c") #Change light to correct colour
+                canvas.itemconfig(section2, tag="Red") #Change section tag to correct value
             elif self.number == 3:
-                light3Text.config(text='Red', bg="#e74c3c")
-                canvas.itemconfig(lightcolour3, fill="#e74c3c")
-                canvas.itemconfig(section3, tag="Red")
+                light3Text.config(text='Red', bg="#e74c3c") #Change label text to correct value
+                canvas.itemconfig(lightcolour3, fill="#e74c3c") #Change light to correct colour
+                canvas.itemconfig(section3, tag="Red") #Change section tag to correct value
             elif self.number == 4:
-                light4Text.config(text='Red', bg="#e74c3c")
-                canvas.itemconfig(lightcolour4, fill="#e74c3c")
-                canvas.itemconfig(section4, tag="Red")
+                light4Text.config(text='Red', bg="#e74c3c") #Change label text to correct value
+                canvas.itemconfig(lightcolour4, fill="#e74c3c") #Change light to correct colour
+                canvas.itemconfig(section4, tag="Red") #Change section tag to correct value
             
 def Start():
     global intPlay
@@ -516,6 +559,7 @@ def Stop():
     global rb1T
     global rb2T
     global m
+    R1.robotStop()
     m.ClearMap()
     main.Stop()
     rb1T.Stop()
@@ -524,7 +568,7 @@ def Stop():
     canvas.delete("Treasure1")
     canvas.delete("Treasure2")
     canvas.delete("Treasure3")
-    canvas.delete("robotTag")
+    ResetLabels() #Resetting labels to default
     
 # assigning a value to variable for map selection    
 def Map1():
@@ -561,8 +605,17 @@ class Map():
     def ClearMap(self):
         global canvas
         canvas.delete("Landmark")
-                  
-   
+
+#Function to reset labels to default
+def ResetLabels():
+    rb1Name.config(text='Robot 1:')
+    rb1Position.config(text='Position:')
+    rb1Status.config(text='Status:')
+    rb1Landmark.config(text='Landmark:')
+    rb1Visited.config(text='Visited:')
+    rb1TreasurePos.config(text='Treasure Position:')
+    rb1Points.config(text='Points:')
+                     
 #Creating frames to seperate controls
 Section1 = Frame(bd=1, relief=SUNKEN, height=121, width=161)
 Section1.place(x=11, y=500)
@@ -640,14 +693,19 @@ rb2Timer.place(x=735, y=607)
 #Padds canvas
 canvas.pack(padx=10, pady=10)
 
+#Creating light objects
 light1 = Light(1)
 light2 = Light(2)
 light3 = Light(3)
 light4 = Light(4)
+
+#Drawing lights onto canvas using function in light class
 light1.CreateLight()
 light2.CreateLight()
 light3.CreateLight()
 light4.CreateLight()
+
+#Drawing line around canvas
 whole=canvas.create_rectangle(2, 480, 851, 2)
 
 window.mainloop()
