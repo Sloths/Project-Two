@@ -102,8 +102,8 @@ class Robot:
 
     def robotSpawn(self):
         # Create a rect object for robot.
-        self.rXPos = random.randint(1, 100)
-        self.rYPos = random.randint(1, 100)
+        self.rXPos = random.randint(20, 854)
+        self.rYPos = random.randint(20, 500)
         self.robot = canvas.create_rectangle(self.rXPos, self.rYPos, self.rXPos + 10, self.rYPos + 10, fill = "cyan", outline = "blue", tag = "robotTag")
         self.run = True
 
@@ -550,9 +550,9 @@ def Start():
             spawnTreasure[n].DrawTreasure(canvas)# draw treasure onto canvas
             
         R1 = Robot() # Create instance of robot class (R1)
-        R2 = Robot() # Create instance of robot class (R1)
+        #R2 = Robot() # Create instance of robot class (R1)
         R1.robotSpawn() # Draw R1 onto screen
-        R2.robotSpawn() # Draw R1 onto screen
+        #R2.robotSpawn() # Draw R1 onto screen
         
         R1.robotMove(obstacles)  # Deploy R1 movement behaviour
         #R2.robotMove(obstacles) # Deploy R1 movement behaviour  
