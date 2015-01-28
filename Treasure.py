@@ -364,9 +364,12 @@ class Timer:
         self.done = True
         
     def Count(self):
+        # condition - if the program is running
         if self.stop == False:
+             # second increments by 1
             self.second = self.second + 1
             if self.second == 60:
+                # once the timer reaches 60 seconds, a minute is reached and the seconds is set back to 0 to repeat process
                 self.minute = self.minute + 1
                 self.second = 0
             if self.minute == 60:
@@ -380,6 +383,7 @@ class Timer:
                 light3.ChangeLight()
                 light4.ChangeLight()
 
+            # formatting of timer display
             if self.hour < 10:
                 if self.minute < 10:
                     if self.second < 10:
