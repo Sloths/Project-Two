@@ -582,7 +582,7 @@ def Stop():
     main.Stop()
     rb1T.Stop()
     rb2T.Stop()
-    canvas.delete("Treasure0")
+    canvas.delete("Treasure0") # each treasure's ID starts from index 0 - 3, call each ID to delete when stop pressed 
     canvas.delete("Treasure1")
     canvas.delete("Treasure2")
     canvas.delete("Treasure3")
