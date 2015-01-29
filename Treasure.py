@@ -31,7 +31,7 @@ class landmark:                                   # Landmark class being created
         self.colour  = "green"                      # the background colour for all landmarks is set here to green in the user interface
         self.outline = "black"                      # the outline colour of all landmarks is set to black in the user interface
         self.treasure = False                       #  setting the variable with the value of 'false'
-        self.treasureID = ""        
+        self.treasureID = ""                        #creating treasure ID for robot 
         
         self.lndmrk = canvas.create_rectangle(self.x1,self.y1,self.x2,self.y2, fill=self.colour, outline = self.outline, tag="Landmark") # creates the landmark with the given coordinates and colours, but they're pre-set.
         
@@ -309,7 +309,7 @@ class Robot:
         else:
             ResetLabels() #Run function to reset labels to default if robot not running anymore
             
-class Treasure():
+class Treasure:
    #create random spawn location of treasure, coordinates need adjusting with landmarks 
     def __init__(self, n, x=0,y=0,size = 12,colour='#ffd700'):
         
@@ -330,7 +330,7 @@ class Treasure():
                 self.x = (x1+x2)/2 # average of the x axis for object
                 self.y = (y1+y2)/2 # average of the y axis for object to get centre
                 obstacles[n].treasure = True # random obstacle has treasure inside it
-                obstacles[n].treasureID = self.id
+                obstacles[n].treasureID = self.id #each treasure in landmark is given an ID 
             else:
                 self.checkLandmark() # checks landmarks if there is a treasure present, if so choose another. 
         
@@ -546,7 +546,7 @@ def Start():
         global rb1T
         global rb2T
         global m
-        global spawnTreasure
+        #global spawnTreasure # no need for this global variable 
         global R1
         global R2
         main = Timer(timer)
@@ -559,7 +559,7 @@ def Start():
         m.LoadMap()
         spawnTreasure= [] # creating an empty array for number of treasures using for loop
         
-        for n in range (4): #giving a range between 0 - 4 
+        for n in range (4): #giving a range between index 0 - 3 
             spawnTreasure.append(Treasure(n)) #update empty array with given argument 
             spawnTreasure[n].DrawTreasure(canvas)# draw treasure onto canvas
             
