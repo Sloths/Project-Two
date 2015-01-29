@@ -316,7 +316,7 @@ class Treasure():
         self.colour = colour
         self.size = size
         self.found = False
-        self.n = n # the given numbe rof treasures to give IDs
+        self.n = n # the given number of treasures to give IDs
         self.id = "Treasure" + str(n)  # giving the treasure different IDs, easier for robot to detect 
         #print self.id - put in place to test Treasure IDs
         
@@ -355,7 +355,9 @@ class Timer:
         #used to stop timer and get rid of time i.e. when game is done
         global intPlay
         intPlay = 0
+        # used so the timer stops
         self.stop = True
+        # used as the robot has not found the treasure
         self.done = False
         
     def Done(self): #Change to done if robot is done
@@ -369,47 +371,59 @@ class Timer:
              # second increments by 1
             self.second = self.second + 1
             if self.second == 60:
-                # once the timer reaches 60 seconds, a minute is reached and the seconds is set back to 0 to repeat process
+                # once the timer reaches 60 seconds, a minute is reached and the seconds are set back to 0 to repeat process
                 self.minute = self.minute + 1
                 self.second = 0
             if self.minute == 60:
+                # once the timer reaches 60 minutes, an hour is reached and the minutes are set to 0 to repeat the process
                 self.hour = self.hour + 1
                 self.minute = 0
 
             #Generate 4 random numbers between 1 - 3 for lights
+            # lights change every 5 seconds
             if self.second % 5 == 0:
                 light1.ChangeLight()
                 light2.ChangeLight()
                 light3.ChangeLight()
                 light4.ChangeLight()
 
-            # formatting of timer display
+            # formatting of timer display hh:mm:ss
             if self.hour < 10:
                 if self.minute < 10:
                     if self.second < 10:
+                        # e.g. 01:02:03
                         self.time = "0" + str(self.hour) + ":0" + str(self.minute) + ":0" + str(self.second)
                     else:
+                        # e.g. 01:02:34
                         self.time = "0" + str(self.hour) + ":0" + str(self.minute) + ":" + str(self.second)
                 else:
                     if self.second < 10:
+                        # e.g. 01:23:04
                         self.time = "0" + str(self.hour) + ":" + str(self.minute) + ":0" + str(self.second)
                     else:
+                        # e.g. 01:23:45
                         self.time = "0" + str(self.hour) + ":" + str(self.minute) + ":" + str(self.second)
             else:
                 if self.minute < 10:
                     if self.second < 10:
-                        elf.time = str(self.hour) + ":0" + str(self.minute) + ":0" + str(self.second)
+                        # e.g. 12:03:04
+                        self.time = str(self.hour) + ":0" + str(self.minute) + ":0" + str(self.second)
                     else:
+                        # e.g. 12:03:45
                         self.time = str(self.hour) + ":0" + str(self.minute) + ":" + str(self.second)
                 else:
                     if self.second < 10:
+                        # e.g. 12:34:05
                         self.time = str(self.hour) + ":" + str(self.minute) + ":0" + str(self.second)
                     else:
+                        #12:34:56
                         self.time = str(self.hour) + ":" + str(self.minute) + ":" + str(self.second)
-            # 1000 ticks == 1 second delay
+            # executing the timer display as a string so it can display as a label
             exec str(self.label.config(text=(self.time)))
+            # 1000 ticks == 1 second delay and continues the Count function
             self.label.after(1000, self.Count)
         else:
+            # when the robot has found the treasures the timer is stopped, and the time the robot found the treasures in is displayed
             if self.done == True:
                 exec str(self.label.config(text=(self.time)))
             else:
