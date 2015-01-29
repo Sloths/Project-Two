@@ -6,11 +6,11 @@ In our interpretation of the specification we decided to have 4 treasures which 
 
 ## Installation
  
-TODO: Describe the installation process
+TODO: Screenshot showing program GUI and program running
  
-## Usage
+## Future Enhancements
  
-TODO: Write usage instructions
+TODO: List of features we wish to add if we had more time etc
  
 ## Credits
  
