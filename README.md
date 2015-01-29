@@ -6,11 +6,25 @@ In our interpretation of the specification we decided to have 4 treasures which 
 
 ## Installation
  
-TODO: Screenshot showing program GUI and program running
+The program can be run from the Python compiler IDLE, when the program runs you will be shown the GUI shown below. To run the virtual robot treasure hunt press the start button and then robot will spawn and find treasure. The map can be changed by pressing the buttons labelled 1, 2, 3 or 4, the change will take place once you restart the game again (i.e. press stop then start). 
+
+![Initial Start](https://raw.githubusercontent.com/Sloths/Project-Two/master/assets/initial_start.jpg)
+
+Below is a screenshot showing the program running and the robot finding treasure within the landmarks on the map.
+
+![Running Program](https://raw.githubusercontent.com/Sloths/Project-Two/master/assets/running.jpg)
  
 ## Future Enhancements
  
-TODO: List of features we wish to add if we had more time etc
+Due to time issues we were unable to finish the program to the standard we had hoped for, however we have created a list of enhancements that we would implement if we had a larger time scale.
+
+* Add second robot
+* Make robots avoid landmarks
+* Make robots go to every landmark to 'check' if treasure is there
+* Add images for each map background
+* Add controlable robot for user to race AI robots
+* Create graphics for robot, landmark, treasure to make it pirate themed
+* Map creator
  
 ## Credits
  
