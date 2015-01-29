@@ -315,14 +315,13 @@ class Treasure:
         
         self.colour = colour
         self.size = size
-        self.found = False
         self.n = n # the given number of treasures to give IDs
         self.id = "Treasure" + str(n)  # giving the treasure different IDs, easier for robot to detect 
         #print self.id - put in place to test Treasure IDs
         
     def checkLandmark(self):
         global intPlay 
-        if intPlay <=1:  # if intial play is less than one, create random search of objects for treasure 
+        if intPlay <=1:  # if intial play is less than or equal to one, create random search of objects for treasure 
             n = random.randint(0,len(obstacles)-1) # chooses random object within obstacle array. index 0 - 8 but -1, because 7 landmarks 
             
             if obstacles[n].treasure == False: # if no treasure in landmark 
