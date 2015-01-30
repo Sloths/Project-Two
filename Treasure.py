@@ -277,7 +277,7 @@ class Robot:
                             ID = o.treasureID 
                             canvas.delete(ID) # Delete treasure object from list
                             o.treasureID = ""
-                            self.points = self.points + 100 #Add 100 to points as treasure has been found
+                            self.points += 100 #Add 100 to points as treasure has been found
                             
                         self.rXPos += self.vx                
                         self.rYPos += self.vy
