@@ -479,7 +479,8 @@ class Light():
             self.colour = "Green" #Change string to hold value of light
         
     def ChangeLight(self): #Function to change lights, called in timer class count function
-        intColour = random.randrange(1,4,1) #Generate random number from 1-3
+        intColour = random.randrange(1,4) # Random selection of traffic lights ranging from 1 - 3
+        
         global canvas
         
         if intColour == 1: #If random number = 1 (Green)
