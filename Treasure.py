@@ -42,7 +42,7 @@ def MapOneLandMarks():                              #creating a new function whi
         # this code within the array creates the first landmark                        
         landmark(30, 50, 180, 95),                 
         landmark(600,50,800,200), 
-        landmark(150,20,370,270), 
+        landmark(150,200,370,270), 
         landmark(370,50,440,150),                              
         landmark(50,350,110,400),            
         landmark(450,250,600,400),        
